@@ -3,7 +3,7 @@ info:
   title: AMI
   description: fuck the cs hse
   contact: {}
-  version: 1.0.0
+  version: 0.0.1
 servers:
   - url: 'https://bestdomainever.com/api'
     variables: {}
