@@ -1,0 +1,26 @@
+get:
+  tags:
+    - groups
+    - students
+  summary: Get all students that are part of group
+  parameters:
+    - in: path
+      name: group_id
+      description: |
+        Id of a group to retrieve information about
+      required: true
+      type: integer
+  responses:
+    '200':
+      description: |
+        Returns list of students that are attended to given group
+      schema:
+        type: array
+        items:
+          $ref: '#/definitions/Student'
+    '400':
+      description: Invalid query
+      schema:
+        $ref: '#/components/schemas/ServerErrorResponse'
+    '404':
+      $ref: '#/components/responses/NotFound'

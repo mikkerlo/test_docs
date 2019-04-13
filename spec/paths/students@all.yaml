@@ -1,0 +1,16 @@
+get:
+  tags:
+    - students
+  summary: Get all students
+  description: |
+    Returns `count` students from offset `offset`.
+  operationId: addPet
+  produces:
+    - application/json
+  responses:
+    '200':
+      description: 'OK, return data'
+      schema:
+        type: array
+        items:
+          $ref: '#/definitions/Student'

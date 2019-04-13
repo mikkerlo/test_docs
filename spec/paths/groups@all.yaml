@@ -1,0 +1,13 @@
+get:
+  tags:
+    - groups
+  summary: Get all groups
+  responses:
+    '200':
+      description: |
+        Returns list of all available groups. In MVP does not support
+        pagination, it returns all groups in once.
+      schema:
+        type: array
+        items:
+          $ref: '#/definitions/Group'

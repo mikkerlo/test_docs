@@ -1,0 +1,22 @@
+post:
+  tags:
+    - deadlines
+    - groups
+  summary: Create new deadline
+  description: Create new deadline
+  parameters:
+    - in: path
+      name: group_id
+      required: true
+      description: |
+        Id of a group to retrieve information about
+      type: integer
+    - in: body
+      name: data
+      schema:
+        $ref: '#/definitions/DeadlineBase'
+  responses:
+    '200':
+      description: OK
+      schema:
+        $ref: '#/definitions/Deadline'

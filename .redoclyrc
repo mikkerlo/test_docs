@@ -1,4 +1,4 @@
-
+specFileName: swagger_api_description.json
 apiTitle: AMI MVP API
 splitSpec: true
 codeSamples: true

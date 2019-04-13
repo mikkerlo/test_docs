@@ -1,0 +1,49 @@
+get:
+  tags:
+    - deadlines
+  summary: Get deadline
+  parameters:
+    - name: deadline_id
+      in: path
+      description: ID of deadline to return
+      required: true
+      type: integer
+      format: int64
+  responses:
+    '200':
+      description: Returns deadline with that id
+      schema:
+        $ref: '#/definitions/Deadline'
+    '400':
+      description: Invalid query
+      schema:
+        $ref: '#/components/schemas/ServerErrorResponse'
+    '404':
+      description: Not found
+      schema:
+        $ref: '#/components/schemas/ServerErrorResponse'
+patch:
+  tags:
+    - deadlines
+  summary: Update deadline
+  description: Updates deadline
+  parameters:
+    - name: deadline_id
+      in: path
+      description: ID of deadline to update
+      required: true
+      type: integer
+      format: int64
+    - name: data
+      in: body
+      description: Data of deadline to be stored
+      required: true
+      schema:
+        $ref: '#/definitions/Deadline'
+  responses:
+    '200':
+      description: OK
+    '400':
+      description: Invalid query
+      schema:
+        $ref: '#/components/schemas/ServerErrorResponse'
