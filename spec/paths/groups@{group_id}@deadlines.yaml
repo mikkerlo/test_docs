@@ -1,0 +1,28 @@
+get:
+  tags:
+    - groups
+  summary: Get all deadlines of group
+  parameters:
+    - in: path
+      name: group_id
+      description: |
+        Id of a group to retrieve information about
+      required: true
+      schema:
+        type: integer
+  responses:
+    '200':
+      description: |
+        Returns list of deadlines that are attached to given group
+      content:
+        '*/*':
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/Deadline'
+    '400':
+      description: Invalid query
+      content:
+        '*/*':
+          schema:
+            $ref: '#/components/schemas/ServerErrorResponse'

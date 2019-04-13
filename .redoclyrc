@@ -1,5 +1,5 @@
-
-apiTitle: AMI MVP API
+specFileName: api.yml
+apiTitle: AMI API
 splitSpec: true
 codeSamples: false
 swaggerUI: false

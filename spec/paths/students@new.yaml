@@ -1,0 +1,28 @@
+post:
+  tags:
+    - students
+  summary: |
+    Create user
+  description: |
+    Creates new user in system
+  responses:
+    '200':
+      description: OK
+      content:
+        '*/*':
+          schema:
+            $ref: '#/components/schemas/Student'
+    '400':
+      description: Invalid query
+      content:
+        '*/*':
+          schema:
+            $ref: '#/components/schemas/ServerErrorResponse'
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: '#/components/schemas/StudentPost'
+    description: |
+      New student data. 
+    required: true

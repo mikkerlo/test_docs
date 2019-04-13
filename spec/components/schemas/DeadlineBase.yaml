@@ -1,0 +1,13 @@
+type: object
+properties:
+  group_id:
+    type: integer
+    format: uint64
+  created_at:
+    $ref: '#/components/schemas/DateTime'
+  header:
+    type: string
+  content:
+    type: string
+  valid_until:
+    $ref: '#/components/schemas/DateTime'

@@ -1,0 +1,24 @@
+post:
+  tags:
+    - groups
+  summary: Create new group
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: '#/components/schemas/GroupBase'
+    description: |
+      Data of new group to store,m
+  responses:
+    '200':
+      description: Group successfully created
+      content:
+        '*/*':
+          schema:
+            $ref: '#/components/schemas/Group'
+    '400':
+      description: Invalid query
+      content:
+        '*/*':
+          schema:
+            $ref: '#/components/schemas/ServerErrorResponse'

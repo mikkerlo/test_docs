@@ -1,0 +1,26 @@
+post:
+  tags:
+    - deadlines
+    - groups
+  summary: Create new deadline
+  description: Create new deadline
+  parameters:
+    - in: path
+      name: group_id
+      required: true
+      description: |
+        Id of a group to retrieve information about
+      schema:
+        type: integer
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: '#/components/schemas/DeadlineBase'
+  responses:
+    '200':
+      description: OK
+      content:
+        '*/*':
+          schema:
+            $ref: '#/components/schemas/Deadline'

@@ -1,0 +1,21 @@
+get:
+  tags:
+    - deadlines
+  summary: Get all deadlines
+  responses:
+    '200':
+      description: |
+        Returns list of all available deadlines. In MVP does not support
+        pagination, it returns all deadlines in once.
+      content:
+        '*/*':
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/Deadline'
+    '400':
+      description: Invalid query
+      content:
+        '*/*':
+          schema:
+            $ref: '#/components/schemas/ServerErrorResponse'

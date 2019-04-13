@@ -1,0 +1,61 @@
+get:
+  tags:
+    - groups
+  summary: Get one group
+  parameters:
+    - in: path
+      name: group_id
+      description: |
+        Id of a group to retrieve information about
+      required: true
+      schema:
+        type: integer
+  responses:
+    '200':
+      description: |
+        Returns information about group with id `group_id`.
+      content:
+        '*/*':
+          schema:
+            $ref: '#/components/schemas/Group'
+    '400':
+      description: Invalid query
+      content:
+        '*/*':
+          schema:
+            $ref: '#/components/schemas/ServerErrorResponse'
+    '404':
+      description: Group not found
+      content:
+        '*/*':
+          schema:
+            $ref: '#/components/responses/NotFound'
+patch:
+  tags:
+    - groups
+  summary: Update group's info
+  parameters:
+    - in: path
+      name: group_id
+      description: |
+        Id of a group to retrieve information about
+      required: true
+      schema:
+        type: integer
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: '#/components/schemas/Group'
+    description: |
+      JSON with new data to store in system.
+  responses:
+    '200':
+      description: |
+        Group is successfully updated
+    '400':
+      description: Invalid query
+      content:
+        '*/*':
+          schema:
+            $ref: '#/components/schemas/ServerErrorResponse'
