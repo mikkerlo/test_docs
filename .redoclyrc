@@ -1,7 +1,7 @@
-specFileName: swagger_api_description.json
+specFileName: swagger.json
 apiTitle: AMI MVP API
 splitSpec: true
-codeSamples: true
+codeSamples: false
 swaggerUI: false
 travis: true
 repo: mikkerlo/test_docs
