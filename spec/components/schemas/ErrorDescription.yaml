@@ -1,0 +1,7 @@
+title: ErrorDescription
+type: object
+properties:
+  ru:
+    type: string
+  en:
+    type: string

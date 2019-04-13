@@ -2,60 +2,68 @@ get:
   tags:
     - groups
   summary: Get one group
+  description: Get one group
+  operationId: GetOneGroup
   parameters:
-    - in: path
-      name: group_id
-      description: |
-        Id of a group to retrieve information about
+    - name: group_id
+      in: path
+      description: Id of a group to retrieve information about
       required: true
+      style: simple
+      explode: false
       schema:
         type: integer
+        format: int32
   responses:
     '200':
       description: |
         Returns information about group with id `group_id`.
+      headers: {}
       content:
-        '*/*':
+        application/json:
           schema:
             $ref: '#/components/schemas/Group'
     '400':
       description: Invalid query
       content:
-        '*/*':
+        application/json:
           schema:
-            $ref: '#/components/schemas/ServerErrorResponse'
+            $ref: '#/components/schemas/ServerErrorResponse_Error'
     '404':
       description: Group not found
-      content:
-        '*/*':
-          schema:
-            $ref: '#/components/responses/NotFound'
+  deprecated: false
 patch:
   tags:
     - groups
   summary: Update group's info
+  description: Update group's info
+  operationId: UpdateGroup'sInfo
   parameters:
-    - in: path
-      name: group_id
-      description: |
-        Id of a group to retrieve information about
+    - name: group_id
+      in: path
+      description: Id of a group to retrieve information about
       required: true
+      style: simple
+      explode: false
       schema:
         type: integer
+        format: int32
   requestBody:
+    description: JSON with new data to store in system.
     content:
       application/json:
         schema:
           $ref: '#/components/schemas/Group'
-    description: |
-      JSON with new data to store in system.
+    required: false
   responses:
     '200':
       description: |
         Group is successfully updated
+      headers: {}
     '400':
       description: Invalid query
       content:
-        '*/*':
+        application/json:
           schema:
-            $ref: '#/components/schemas/ServerErrorResponse'
+            $ref: '#/components/schemas/ServerErrorResponse_Error'
+  deprecated: false

@@ -1,4 +1,4 @@
-specFileName: api.yml
+specFileName: swagger.yaml
 apiTitle: AMI API
 splitSpec: true
 codeSamples: false

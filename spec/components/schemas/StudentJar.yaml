@@ -1,11 +1,13 @@
+title: StudentJar
 type: object
 properties:
   id:
     type: integer
-    format: uint64
+    format: int32
   name:
     type: string
   students:
     type: array
     items:
       $ref: '#/components/schemas/Student'
+    description: ''

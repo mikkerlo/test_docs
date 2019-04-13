@@ -2,59 +2,70 @@ get:
   tags:
     - deadlines
   summary: Get deadline
+  description: Get deadline
+  operationId: GetDeadline
   parameters:
     - name: deadline_id
       in: path
       description: ID of deadline to return
       required: true
+      style: simple
+      explode: false
       schema:
         type: integer
         format: int64
   responses:
     '200':
       description: Returns deadline with that id
+      headers: {}
       content:
-        '*/*':
+        application/json:
           schema:
             $ref: '#/components/schemas/Deadline'
     '400':
       description: Invalid query
       content:
-        '*/*':
+        application/json:
           schema:
-            $ref: '#/components/schemas/ServerErrorResponse'
+            $ref: '#/components/schemas/ServerErrorResponse_Error'
     '404':
       description: Not found
       content:
-        '*/*':
+        application/json:
           schema:
-            $ref: '#/components/schemas/ServerErrorResponse'
+            $ref: '#/components/schemas/ServerErrorResponse_Error'
+  deprecated: false
 patch:
   tags:
     - deadlines
   summary: Update deadline
   description: Updates deadline
+  operationId: UpdateDeadline
   parameters:
     - name: deadline_id
       in: path
       description: ID of deadline to update
       required: true
+      style: simple
+      explode: false
       schema:
         type: integer
         format: int64
   requestBody:
+    description: Data of deadline to be stored
     content:
       application/json:
         schema:
           $ref: '#/components/schemas/Deadline'
-    description: Data of deadline to be stored
     required: true
   responses:
     '200':
       description: OK
+      headers: {}
     '400':
       description: Invalid query
       content:
-        '*/*':
+        application/json:
           schema:
-            $ref: '#/components/schemas/ServerErrorResponse'
+            $ref: '#/components/schemas/ServerErrorResponse_Error'
+  deprecated: false

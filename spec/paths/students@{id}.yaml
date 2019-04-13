@@ -2,63 +2,74 @@ get:
   tags:
     - students
   summary: Get one student
+  description: Get one student
+  operationId: GetOneStudent
   parameters:
     - name: id
       in: path
       description: ID of student to return
       required: true
+      style: simple
+      explode: false
       schema:
         type: integer
         format: int64
   responses:
     '200':
       description: successful operation
+      headers: {}
       content:
-        '*/*':
+        application/json:
           schema:
             $ref: '#/components/schemas/Student'
     '400':
       description: Invalid query
       content:
-        '*/*':
+        application/json:
           schema:
-            $ref: '#/components/schemas/ServerErrorResponse'
+            $ref: '#/components/schemas/ServerErrorResponse_Error'
     '404':
       description: Student not found
+  deprecated: false
 patch:
+  tags:
+    - students
   summary: Update student info
   description: >
     Gets dictionary with student's description, then updates these fields in 
     database.
-  tags:
-    - students
+  operationId: UpdateStudentInfo
   parameters:
     - name: id
       in: path
       description: ID of student to return
       required: true
+      style: simple
+      explode: false
       schema:
         type: integer
         format: int64
   requestBody:
+    description: New data to store
     content:
       application/json:
         schema:
-          $ref: '#/components/schemas/StudentPost'
-    description: New data to store
+          $ref: '#/components/schemas/StudentBase'
     required: true
   responses:
     '200':
       description: ok
+      headers: {}
     '400':
       description: Invalid query
       content:
-        '*/*':
+        application/json:
           schema:
-            $ref: '#/components/schemas/ServerErrorResponse'
+            $ref: '#/components/schemas/ServerErrorResponse_Error'
     '404':
       description: student with such id not found
       content:
-        '*/*':
+        application/json:
           schema:
-            $ref: '#/components/schemas/ServerErrorResponse'
+            $ref: '#/components/schemas/ServerErrorResponse_Error'
+  deprecated: false

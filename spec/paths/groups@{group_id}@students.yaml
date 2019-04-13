@@ -1,31 +1,38 @@
 get:
   tags:
     - groups
-    - students
   summary: Get all students that are part of group
+  description: Get all students that are part of group
+  operationId: GetAllStudentsThatArePartOfGroup
   parameters:
-    - in: path
-      name: group_id
-      description: |
-        Id of a group to retrieve information about
+    - name: group_id
+      in: path
+      description: Id of a group to retrieve information about
       required: true
+      style: simple
+      explode: false
       schema:
         type: integer
+        format: int32
   responses:
     '200':
       description: |
         Returns list of students that are attended to given group
+      headers: {}
       content:
-        '*/*':
+        application/json:
           schema:
             type: array
             items:
               $ref: '#/components/schemas/Student'
+            description: |
+              Returns list of students that are attended to given group
     '400':
       description: Invalid query
       content:
-        '*/*':
+        application/json:
           schema:
-            $ref: '#/components/schemas/ServerErrorResponse'
+            $ref: '#/components/schemas/ServerErrorResponse_Error'
     '404':
-      $ref: '#/components/responses/NotFound'
+      description: The specified resource was not found
+  deprecated: false

@@ -2,23 +2,28 @@ post:
   tags:
     - groups
   summary: Create new group
+  description: Create new group
+  operationId: CreateNewGroup
+  parameters: []
   requestBody:
+    description: 'Data of new group to store,m'
     content:
       application/json:
         schema:
           $ref: '#/components/schemas/GroupBase'
-    description: |
-      Data of new group to store,m
+    required: false
   responses:
     '200':
       description: Group successfully created
+      headers: {}
       content:
-        '*/*':
+        application/json:
           schema:
             $ref: '#/components/schemas/Group'
     '400':
       description: Invalid query
       content:
-        '*/*':
+        application/json:
           schema:
-            $ref: '#/components/schemas/ServerErrorResponse'
+            $ref: '#/components/schemas/ServerErrorResponse_Error'
+  deprecated: false

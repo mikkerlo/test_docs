@@ -5,24 +5,28 @@ post:
     Create user
   description: |
     Creates new user in system
+  operationId: |
+    CreateUser
+  parameters: []
+  requestBody:
+    description: New student data.
+    content:
+      application/json:
+        schema:
+          $ref: '#/components/schemas/StudentBase'
+    required: true
   responses:
     '200':
       description: OK
+      headers: {}
       content:
-        '*/*':
+        application/json:
           schema:
             $ref: '#/components/schemas/Student'
     '400':
       description: Invalid query
       content:
-        '*/*':
+        application/json:
           schema:
-            $ref: '#/components/schemas/ServerErrorResponse'
-  requestBody:
-    content:
-      application/json:
-        schema:
-          $ref: '#/components/schemas/StudentPost'
-    description: |
-      New student data. 
-    required: true
+            $ref: '#/components/schemas/ServerErrorResponse_Error'
+  deprecated: false

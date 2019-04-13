@@ -1,0 +1,6 @@
+title: DateTime
+type: object
+properties:
+  timestamp:
+    type: integer
+    format: int32

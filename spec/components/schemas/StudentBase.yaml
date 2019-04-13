@@ -1,9 +1,6 @@
-title: Student
+title: StudentBase
 type: object
 properties:
-  id:
-    type: integer
-    format: int32
   name:
     $ref: '#/components/schemas/Name'
   birth_date:

@@ -1,16 +1,20 @@
 get:
   tags:
     - students
-  summary: Get all students
+  summary: addPet
   description: |
     Returns `count` students from offset `offset`.
-  operationId: addPet
+  operationId: AddPet
+  parameters: []
   responses:
     '200':
       description: 'OK, return data'
+      headers: {}
       content:
         application/json:
           schema:
             type: array
             items:
               $ref: '#/components/schemas/Student'
+            description: 'OK, return data'
+  deprecated: false

@@ -1,8 +1,12 @@
 openapi: 3.0.0
 info:
-  description: fuck the cs hse
-  version: 1.0.0
   title: AMI
+  description: fuck the cs hse
+  contact: {}
+  version: 1.0.0
+servers:
+  - url: 'https://bestdomainever.com/api'
+    variables: {}
 tags:
   - name: auth
     description: about authentication
@@ -10,5 +14,5 @@ tags:
     description: about students
   - name: groups
     description: about groups
-servers:
-  - url: 'https://bestdomainever.com/api'
+  - name: deadlines
+    description: ''

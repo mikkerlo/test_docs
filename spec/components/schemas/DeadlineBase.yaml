@@ -1,8 +1,9 @@
+title: DeadlineBase
 type: object
 properties:
   group_id:
     type: integer
-    format: uint64
+    format: int32
   created_at:
     $ref: '#/components/schemas/DateTime'
   header:

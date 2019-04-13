@@ -1,0 +1,12 @@
+title: Name
+type: object
+properties:
+  first_name:
+    type: string
+    example: Иван
+  last_name:
+    type: string
+    example: Иванов
+  patronymic_name:
+    type: string
+    example: Иванович

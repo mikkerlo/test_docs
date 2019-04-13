@@ -1,3 +1,4 @@
+title: GroupBase
 type: object
 properties:
   full_name:

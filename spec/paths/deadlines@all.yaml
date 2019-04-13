@@ -2,20 +2,28 @@ get:
   tags:
     - deadlines
   summary: Get all deadlines
+  description: Get all deadlines
+  operationId: GetAllDeadlines
+  parameters: []
   responses:
     '200':
       description: |
         Returns list of all available deadlines. In MVP does not support
         pagination, it returns all deadlines in once.
+      headers: {}
       content:
-        '*/*':
+        application/json:
           schema:
             type: array
             items:
               $ref: '#/components/schemas/Deadline'
+            description: |
+              Returns list of all available deadlines. In MVP does not support
+              pagination, it returns all deadlines in once.
     '400':
       description: Invalid query
       content:
-        '*/*':
+        application/json:
           schema:
-            $ref: '#/components/schemas/ServerErrorResponse'
+            $ref: '#/components/schemas/ServerErrorResponse_Error'
+  deprecated: false
