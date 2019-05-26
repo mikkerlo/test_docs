@@ -3,7 +3,6 @@ type: object
 properties:
   ok:
     type: boolean
-    format: false
     enum:
       - false
   error:

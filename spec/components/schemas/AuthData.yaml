@@ -1,11 +1,8 @@
 title: AuthData
 type: object
+allOf:
+  - $ref: 'components/schemas/SuccessApi'
 properties:
-  ok:
-    enum:
-      - false
-    type: boolean
-    format: true
   result:
     type: object
     properties:

@@ -2,7 +2,7 @@ openapi: 3.0.0
 info:
   title: AMI API FRONT
   description: "Описание API для фронта ами"
-  contact: {mikhail.semenov.al@gmail.com}
+  contact: {}
   version: 1.0.0
 
 servers:
