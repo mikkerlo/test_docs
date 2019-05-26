@@ -1,29 +1,35 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "title": "AMI",
-    "description": "fuck the cs hse",
-    "contact": {},
-    "version": "0.0.1"
+    "title": "AMI API FRONT",
+    "description": "Описание API для фронта ами",
+    "contact": {
+      "mikhail.semenov.al@gmail.com": null
+    },
+    "version": "1.0.0"
   },
   "servers": [
     {
-      "url": "https://bestdomainever.com/api",
+      "url": "https://new.ami161.ru/api",
       "variables": {}
     }
   ],
   "tags": [
     {
       "name": "auth",
-      "description": "about authentication"
+      "description": "Аутенфикация пользователей"
+    },
+    {
+      "name": "files",
+      "description": "Работа с файлами"
     },
     {
       "name": "students",
-      "description": "about students"
+      "description": "Работа со студентами"
     },
     {
       "name": "groups",
-      "description": "about groups"
+      "description": "Работа с группами"
     },
     {
       "name": "deadlines",
@@ -31,6 +37,153 @@
     }
   ],
   "paths": {
+    "/auth/change/": {
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "change",
+        "description": "Сменить пароль и получить новый токен",
+        "operationId": "authChange",
+        "parameters": [],
+        "requestBody": {
+          "description": "Базовые данные авторизации и новый пароль",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AuthChange"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Возвращает токен для следующих запросов\n",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AuthData"
+                  },
+                  "description": "Возвращает токен\n"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Некорректный запрос",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServerErrorResponse_Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/login/": {
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "login",
+        "description": "Авторизироваться и получить токен",
+        "operationId": "authLogin",
+        "parameters": [],
+        "requestBody": {
+          "description": "Базовые данные авторизации",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AuthBase"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Возвращает токен для следующих запросов\n",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AuthData"
+                  },
+                  "description": "Возвращает токен\n"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Некорректный запрос",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServerErrorResponse_Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/refresh/": {
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "refresh",
+        "description": "Рефрешнуть токен и получить новый",
+        "operationId": "authRefresh",
+        "parameters": [],
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Возвращает токен для следующих запросов\n",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AuthData"
+                  },
+                  "description": "Возвращает токен\n"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Некорректный запрос",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServerErrorResponse_Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Некорректный токен",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServerErrorResponse_Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/deadlines/{deadline_id}": {
       "get": {
         "tags": [
@@ -166,6 +319,49 @@
           },
           "400": {
             "description": "Invalid query",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServerErrorResponse_Error"
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/file/upload/": {
+      "post": {
+        "tags": [
+          "files"
+        ],
+        "summary": "Залить файл на сервер",
+        "description": "Залить файл на сервер",
+        "operationId": "uploadFile",
+        "parameters": [],
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Возвращает данные о залитом файле или ошибку\n",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Deadline"
+                  },
+                  "description": "Возвращает данные о залитом файле\n"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Некорректный запрос",
             "content": {
               "application/json": {
                 "schema": {
@@ -803,6 +999,54 @@
   },
   "components": {
     "schemas": {
+      "AuthBase": {
+        "title": "AuthBase",
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        }
+      },
+      "AuthChange": {
+        "title": "AuthChange",
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/AuthBase"
+          }
+        ],
+        "properties": {
+          "new_password": {
+            "type": "string"
+          }
+        }
+      },
+      "AuthData": {
+        "title": "AuthData",
+        "type": "object",
+        "properties": {
+          "ok": {
+            "enum": [
+              false
+            ],
+            "type": "boolean",
+            "format": true
+          },
+          "result": {
+            "type": "object",
+            "properties": {
+              "token": {
+                "type": "string",
+                "title": "Токен авторизации"
+              }
+            }
+          }
+        }
+      },
       "DateTime": {
         "title": "DateTime",
         "type": "object",
@@ -858,18 +1102,6 @@
           },
           "valid_until": {
             "$ref": "#/components/schemas/DateTime"
-          }
-        }
-      },
-      "ErrorDescription": {
-        "title": "ErrorDescription",
-        "type": "object",
-        "properties": {
-          "ru": {
-            "type": "string"
-          },
-          "en": {
-            "type": "string"
           }
         }
       },
@@ -997,17 +1229,15 @@
         "title": "ServerErrorResponse_Error",
         "type": "object",
         "properties": {
-          "error_code": {
-            "type": "integer",
-            "format": "int32",
-            "example": 400
+          "ok": {
+            "type": "boolean",
+            "format": false,
+            "enum": [
+              false
+            ]
           },
-          "error_subcode": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "error_description": {
-            "$ref": "#/components/schemas/ErrorDescription"
+          "error": {
+            "type": "string"
           }
         }
       },
@@ -1021,11 +1251,6 @@
           },
           "name": {
             "$ref": "#/components/schemas/Name"
-          },
-          "birth_date": {
-            "type": "integer",
-            "format": "int32",
-            "example": 905256000
           },
           "email": {
             "type": "string",
@@ -1078,6 +1303,25 @@
             "description": ""
           }
         }
+      },
+      "SuccessApi": {
+        "title": "StatusCode",
+        "type": "object",
+        "properties": {
+          "ok": {
+            "enum": [
+              true
+            ],
+            "type": "boolean"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "basicAuth": {
+        "type": "apiKey",
+        "name": "X-TOKEN",
+        "in": "header"
       }
     }
   }
