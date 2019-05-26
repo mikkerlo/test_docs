@@ -18,6 +18,8 @@ post:
               format: binary
             name:
               type: string
+          required:
+            - file
 
   responses:
     '200':
