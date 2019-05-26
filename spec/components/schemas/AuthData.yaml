@@ -1,0 +1,14 @@
+title: AuthData
+type: object
+properties:
+  ok:
+    enum:
+      - false
+    type: boolean
+    format: true
+  result:
+    type: object
+    properties:
+      token:
+        type: string
+        title: Токен авторизации

@@ -1,0 +1,32 @@
+post:
+  tags:
+    - auth
+  summary: login
+  description: Авторизироваться и получить токен
+  operationId: authLogin
+  parameters: []
+  requestBody:
+      description: Базовые данные авторизации
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AuthBase'
+
+  responses:
+    '200':
+      description: |
+        Возвращает токен для следующих запросов
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/AuthData'
+            description: |
+              Возвращает токен
+    '400':
+      description: Некорректный запрос
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ServerErrorResponse_Error'

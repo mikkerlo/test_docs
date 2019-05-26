@@ -1,0 +1,7 @@
+title: StatusCode
+type: object
+properties:
+  ok:
+    enum:
+      - true
+    type: boolean

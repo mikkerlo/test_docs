@@ -1,0 +1,33 @@
+post:
+  tags:
+    - auth
+  summary: change
+  description: Сменить пароль и получить новый токен
+  operationId: authChange
+  parameters: []
+  requestBody:
+    description: Базовые данные авторизации и новый пароль
+    content:
+      application/json:
+        schema:
+          $ref: '#/components/schemas/AuthChange'
+    required: true
+
+  responses:
+    '200':
+      description: |
+        Возвращает токен для следующих запросов
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/AuthData'
+            description: |
+              Возвращает токен
+    '400':
+      description: Некорректный запрос
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ServerErrorResponse_Error'

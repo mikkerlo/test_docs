@@ -1,7 +1,8 @@
-title: ErrorDescription
+title: AuthBase
 type: object
 properties:
-  ru:
+  username:
     type: string
-  en:
+  password:
     type: string
+

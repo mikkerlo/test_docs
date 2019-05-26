@@ -6,10 +6,6 @@ properties:
     format: int32
   name:
     $ref: '#/components/schemas/Name'
-  birth_date:
-    type: integer
-    format: int32
-    example: 905256000
   email:
     type: string
     example: john_smith@example.com

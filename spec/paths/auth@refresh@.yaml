@@ -1,0 +1,33 @@
+post:
+  tags:
+    - auth
+  summary: refresh
+  description: Рефрешнуть токен и получить новый
+  operationId: authRefresh
+  parameters: []
+  security:
+  - basicAuth: []
+  responses:
+    '200':
+      description: |
+        Возвращает токен для следующих запросов
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/AuthData'
+            description: |
+              Возвращает токен
+    '400':
+      description: Некорректный запрос
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ServerErrorResponse_Error'
+    '401':
+      description: Некорректный токен
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ServerErrorResponse_Error'

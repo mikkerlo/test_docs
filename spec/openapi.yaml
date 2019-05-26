@@ -1,18 +1,26 @@
 openapi: 3.0.0
 info:
-  title: AMI
-  description: fuck the cs hse
-  contact: {}
-  version: 0.0.1
+  title: AMI API FRONT
+  description: "Описание API для фронта ами"
+  contact: {mikhail.semenov.al@gmail.com}
+  version: 1.0.0
+
 servers:
-  - url: 'https://bestdomainever.com/api'
+  - url: 'https://new.ami161.ru/api'
     variables: {}
+
 tags:
   - name: auth
-    description: about authentication
+    description: Аутенфикация пользователей
+  
+  - name: files
+    description: Работа с файлами
+  
   - name: students
-    description: about students
+    description: Работа со студентами
+  
   - name: groups
-    description: about groups
+    description: Работа с группами
+  
   - name: deadlines
     description: ''

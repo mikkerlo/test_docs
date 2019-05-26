@@ -1,0 +1,8 @@
+title: AuthChange
+type: object
+allOf:
+  - $ref: '#/components/schemas/AuthBase'
+properties:
+  new_password:
+    type: string
+

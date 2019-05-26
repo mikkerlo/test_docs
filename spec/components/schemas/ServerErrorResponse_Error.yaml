@@ -1,12 +1,11 @@
 title: ServerErrorResponse_Error
 type: object
 properties:
-  error_code:
-    type: integer
-    format: int32
-    example: 400
-  error_subcode:
-    type: integer
-    format: int32
-  error_description:
-    $ref: '#/components/schemas/ErrorDescription'
+  ok:
+    type: boolean
+    format: false
+    enum:
+      - false
+  error:
+    type: string
+  
