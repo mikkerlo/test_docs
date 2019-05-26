@@ -703,7 +703,7 @@ components:
       title: AuthData
       type: object
       allOf:
-        - $ref: components/schemas/SuccessApi
+        - $ref: '#/components/schemas/SuccessApi'
       properties:
         result:
           type: object
