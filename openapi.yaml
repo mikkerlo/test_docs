@@ -241,6 +241,8 @@ paths:
                   format: binary
                 name:
                   type: string
+              required:
+                - file
       responses:
         '200':
           description: |
@@ -705,6 +707,9 @@ components:
           type: string
         password:
           type: string
+      required:
+        - username
+        - password
     AuthChange:
       title: AuthChange
       type: object
@@ -713,6 +718,8 @@ components:
       properties:
         new_password:
           type: string
+      required:
+        - new_password
     AuthData:
       title: AuthData
       type: object

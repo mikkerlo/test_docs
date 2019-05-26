@@ -356,7 +356,10 @@
                   "name": {
                     "type": "string"
                   }
-                }
+                },
+                "required": [
+                  "file"
+                ]
               }
             }
           }
@@ -1031,7 +1034,11 @@
           "password": {
             "type": "string"
           }
-        }
+        },
+        "required": [
+          "username",
+          "password"
+        ]
       },
       "AuthChange": {
         "title": "AuthChange",
@@ -1045,7 +1052,10 @@
           "new_password": {
             "type": "string"
           }
-        }
+        },
+        "required": [
+          "new_password"
+        ]
       },
       "AuthData": {
         "title": "AuthData",
