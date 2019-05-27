@@ -3,7 +3,7 @@ info:
   title: AMI API 
   description: Описание API для фронта ами
   contact: {}
-  version: 1.0.1
+  version: 1.0.0
 servers:
   - url: 'https://new.ami161.ru/api'
     variables: {}
