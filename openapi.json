@@ -93,7 +93,7 @@
         "operationId": "authLogin",
         "parameters": [],
         "requestBody": {
-          "description": "Базовые данные авторизации",
+          "description": "юзернейм и пароль юзера",
           "content": {
             "application/json": {
               "schema": {
@@ -104,7 +104,7 @@
         },
         "responses": {
           "200": {
-            "description": "Возвращает токен для следующих запросов\n",
+            "description": "Возвращает токен для следующих запросов. Данный токен живет час, затем его нужно\nобновить. Если в течение месяца обновления токена не произошло, токен обновить\nуже будет нельзя, и нужно будет делать релогин.\n",
             "content": {
               "application/json": {
                 "schema": {
@@ -118,7 +118,7 @@
             }
           },
           "400": {
-            "description": "Некорректный запрос",
+            "description": "Некорректный запрос. \n",
             "content": {
               "application/json": {
                 "schema": {
@@ -182,19 +182,24 @@
         }
       }
     },
-    "/deadlines/{deadline_id}": {
+    "/deadlines/{deadline_id}/": {
       "get": {
         "tags": [
           "deadlines"
         ],
         "summary": "Get deadline",
-        "description": "Get deadline",
+        "description": "Получить дедлайн по айдшнику",
         "operationId": "GetDeadline",
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
         "parameters": [
           {
             "name": "deadline_id",
             "in": "path",
-            "description": "ID of deadline to return",
+            "description": "ID дедлайна",
             "required": true,
             "style": "simple",
             "explode": false,
@@ -206,18 +211,40 @@
         ],
         "responses": {
           "200": {
-            "description": "Returns deadline with that id",
+            "description": "Возвращает дедлайн с заданным айдишником",
             "headers": {},
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Deadline"
+                  "type": "object",
+                  "properties": {
+                    "ok": {
+                      "type": "boolean",
+                      "format": "true"
+                    },
+                    "result": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Deadline"
+                      }
+                    }
+                  }
                 }
               }
             }
           },
           "400": {
-            "description": "Invalid query",
+            "description": "Запрос составлен неверно.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServerErrorResponse_Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Некорректный токен или пользователь не авторизован",
             "content": {
               "application/json": {
                 "schema": {
@@ -227,7 +254,7 @@
             }
           },
           "404": {
-            "description": "Not found",
+            "description": "Дедлайн не найден.",
             "content": {
               "application/json": {
                 "schema": {
@@ -244,7 +271,7 @@
           "deadlines"
         ],
         "summary": "Update deadline",
-        "description": "Updates deadline",
+        "description": "Обновить информацию о дедлайне.",
         "operationId": "UpdateDeadline",
         "parameters": [
           {
@@ -265,7 +292,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Deadline"
+                "$ref": "#/components/schemas/DeadlineBase"
               }
             }
           },
@@ -285,32 +312,116 @@
                 }
               }
             }
+          },
+          "401": {
+            "description": "Некорректный токен или пользователь не авторизован",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServerErrorResponse_Error"
+                }
+              }
+            }
           }
         },
         "deprecated": false
       }
     },
-    "/deadlines/all": {
+    "/deadlines/all/": {
       "get": {
         "tags": [
           "deadlines"
         ],
         "summary": "Get all deadlines",
-        "description": "Get all deadlines",
+        "description": "Получить список всех дедлайнов в системе",
         "operationId": "GetAllDeadlines",
         "parameters": [],
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
         "responses": {
           "200": {
-            "description": "Returns list of all available deadlines. In MVP does not support\npagination, it returns all deadlines in once.\n",
+            "description": "Возвращает список всех дедлайнов, которые есть в системе, не глядя на права доступа пользователя.\n",
             "headers": {},
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Deadline"
-                  },
-                  "description": "Returns list of all available deadlines. In MVP does not support\npagination, it returns all deadlines in once.\n"
+                  "type": "object",
+                  "properties": {
+                    "ok": {
+                      "type": "boolean",
+                      "format": "true"
+                    },
+                    "result": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Deadline"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Неверный запрос",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServerErrorResponse_Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Некорректный токен или пользователь не авторизован",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServerErrorResponse_Error"
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/deadlines/new/": {
+      "post": {
+        "tags": [
+          "deadlines"
+        ],
+        "summary": "Create new deadline",
+        "description": "Создать новый дедлайн",
+        "operationId": "CreateNewDeadline",
+        "parameters": [],
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
+        "requestBody": {
+          "description": "Data of new deadline to store",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DeadlineBase"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Deadline successfully created",
+            "headers": {},
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Deadline"
                 }
               }
             }
@@ -387,7 +498,7 @@
             }
           },
           "401": {
-            "description": "Некорректный токен",
+            "description": "Некорректный токен или пользователь не авторизован",
             "content": {
               "application/json": {
                 "schema": {
@@ -399,19 +510,24 @@
         }
       }
     },
-    "/groups/{group_id}": {
+    "/groups/{group_id}/": {
       "get": {
         "tags": [
           "groups"
         ],
         "summary": "Get one group",
-        "description": "Get one group",
+        "description": "Получить информацию о заданной группе",
         "operationId": "GetOneGroup",
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
         "parameters": [
           {
             "name": "group_id",
             "in": "path",
-            "description": "Id of a group to retrieve information about",
+            "description": "ID группы",
             "required": true,
             "style": "simple",
             "explode": false,
@@ -423,7 +539,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Returns information about group with id `group_id`.\n",
+            "description": "Возвращает информацию о заданной группе\n",
             "headers": {},
             "content": {
               "application/json": {
@@ -434,7 +550,17 @@
             }
           },
           "400": {
-            "description": "Invalid query",
+            "description": "Неверно составлен запрос",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServerErrorResponse_Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Некорректный токен или пользователь не авторизован",
             "content": {
               "application/json": {
                 "schema": {
@@ -444,7 +570,14 @@
             }
           },
           "404": {
-            "description": "Group not found"
+            "description": "Группа не найдена",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServerErrorResponse_Error"
+                }
+              }
+            }
           }
         },
         "deprecated": false
@@ -454,7 +587,7 @@
           "groups"
         ],
         "summary": "Update group's info",
-        "description": "Update group's info",
+        "description": "Обновить информацию о группе",
         "operationId": "UpdateGroup'sInfo",
         "parameters": [
           {
@@ -471,11 +604,11 @@
           }
         ],
         "requestBody": {
-          "description": "JSON with new data to store in system.",
+          "description": "Обновленные данные о группе. Все поля обязательны",
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Group"
+                "$ref": "#/components/schemas/GroupBase"
               }
             }
           },
@@ -495,12 +628,120 @@
                 }
               }
             }
+          },
+          "401": {
+            "description": "Некорректный токен или пользователь не авторизован",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServerErrorResponse_Error"
+                }
+              }
+            }
           }
         },
         "deprecated": false
       }
     },
-    "/groups/{group_id}/deadlines": {
+    "/groups/{group_id}/add-moderator": {
+      "post": {
+        "tags": [
+          "groups"
+        ],
+        "summary": "добавить модератора в группу",
+        "description": "Добавляет модератора в группу.",
+        "operationId": "AddModeratorToGroup",
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "group_id",
+            "in": "path",
+            "description": "Id of a group",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Студент на добавление в модераторы",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "student_id": {
+                    "type": "integer",
+                    "format": "int32"
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Модератор добавлен в группу\n",
+            "headers": {},
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ok": {
+                      "type": "boolean",
+                      "format": "true"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid query",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServerErrorResponse_Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Некорректный токен или пользователь не авторизован",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServerErrorResponse_Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Пользователь не является создателем группы",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServerErrorResponse_Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Пользователь на добавление не найден"
+          }
+        }
+      }
+    },
+    "/groups/{group_id}/deadlines/": {
       "get": {
         "tags": [
           "groups"
@@ -508,6 +749,11 @@
         "summary": "Get all deadlines of group",
         "description": "Get all deadlines of group",
         "operationId": "GetAllDeadlinesOfGroup",
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
         "parameters": [
           {
             "name": "group_id",
@@ -552,14 +798,19 @@
         "deprecated": false
       }
     },
-    "/groups/{group_id}/deadlines/new": {
-      "post": {
+    "/groups/{group_id}/invite-token": {
+      "get": {
         "tags": [
-          "deadlines"
+          "groups"
         ],
-        "summary": "Create new deadline",
-        "description": "Create new deadline",
-        "operationId": "CreateNewDeadline",
+        "summary": "получить инвайт-токен группы",
+        "description": "Возвращает текущий инвайт-токен для данной группы",
+        "operationId": "GetGroupInviteToken",
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
         "parameters": [
           {
             "name": "group_id",
@@ -574,34 +825,326 @@
             }
           }
         ],
-        "requestBody": {
-          "description": "",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/DeadlineBase"
-              }
-            }
-          },
-          "required": false
-        },
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "Текущий инвайт-токен\n",
             "headers": {},
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Deadline"
+                  "type": "object",
+                  "properties": {
+                    "ok": {
+                      "type": "boolean",
+                      "format": "true"
+                    },
+                    "result": {
+                      "$ref": "#/components/schemas/InviteToken"
+                    }
+                  }
                 }
               }
             }
+          },
+          "400": {
+            "description": "Invalid query",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServerErrorResponse_Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Некорректный токен или пользователь не авторизован",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServerErrorResponse_Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Пользователь не является модератором или создателем группы",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServerErrorResponse_Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The specified resource was not found"
           }
-        },
-        "deprecated": false
+        }
+      },
+      "post": {
+        "tags": [
+          "groups"
+        ],
+        "summary": "создать инвайт-токен группы",
+        "description": "Создает новый инвайт-токен для данной группы",
+        "operationId": "CreateGroupInviteToken",
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "group_id",
+            "in": "path",
+            "description": "Id of a group to retrieve information about",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Текущий инвайт-токен\n",
+            "headers": {},
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ok": {
+                      "type": "boolean",
+                      "format": "true"
+                    },
+                    "result": {
+                      "$ref": "#/components/schemas/InviteToken"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid query",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServerErrorResponse_Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Некорректный токен или пользователь не авторизован",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServerErrorResponse_Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Пользователь не является модератором или создателем группы",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServerErrorResponse_Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The specified resource was not found"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "groups"
+        ],
+        "summary": "удалить инвайт-токен группы",
+        "description": "Возвращает текущий инвайт-токен для данной группы",
+        "operationId": "DeleteGroupInviteToken",
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "group_id",
+            "in": "path",
+            "description": "Id of a group to retrieve information about",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Текущий инвайт-токен\n",
+            "headers": {},
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ok": {
+                      "type": "boolean",
+                      "format": "true"
+                    },
+                    "result": {
+                      "$ref": "#/components/schemas/InviteToken"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid query",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServerErrorResponse_Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Некорректный токен или пользователь не авторизован",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServerErrorResponse_Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Пользователь не является модератором или создателем группы",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServerErrorResponse_Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The specified resource was not found"
+          }
+        }
       }
     },
-    "/groups/{group_id}/students": {
+    "/groups/{group_id}/remove-moderator": {
+      "post": {
+        "tags": [
+          "groups"
+        ],
+        "summary": "разжаловать модератора",
+        "description": "Снять полномочия модератора со студента.",
+        "operationId": "RemoveModeratorFromGroup",
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "group_id",
+            "in": "path",
+            "description": "Id of a group",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Студент на удаление из модераторов",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "student_id": {
+                    "type": "integer",
+                    "format": "int32"
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Модератор удален из группы\n",
+            "headers": {},
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ok": {
+                      "type": "boolean",
+                      "format": "true"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid query",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServerErrorResponse_Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Некорректный токен или пользователь не авторизован",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServerErrorResponse_Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Пользователь не является создателем группы",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServerErrorResponse_Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Пользователь на удаление не найден"
+          }
+        }
+      }
+    },
+    "/groups/{group_id}/students/": {
       "get": {
         "tags": [
           "groups"
@@ -609,6 +1152,11 @@
         "summary": "Get all students that are part of group",
         "description": "Get all students that are part of group",
         "operationId": "GetAllStudentsThatArePartOfGroup",
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
         "parameters": [
           {
             "name": "group_id",
@@ -656,18 +1204,23 @@
         "deprecated": false
       }
     },
-    "/groups/all": {
+    "/groups/all/": {
       "get": {
         "tags": [
           "groups"
         ],
         "summary": "Get all groups",
-        "description": "Get all groups",
+        "description": "Получить список всех групп",
         "operationId": "GetAllGroups",
         "parameters": [],
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
         "responses": {
           "200": {
-            "description": "Returns list of all available groups. In MVP does not support\npagination, it returns all groups in once.\n",
+            "description": "Возвращает список всех групп\n",
             "headers": {},
             "content": {
               "application/json": {
@@ -675,8 +1228,7 @@
                   "type": "array",
                   "items": {
                     "$ref": "#/components/schemas/Group"
-                  },
-                  "description": "Returns list of all available groups. In MVP does not support\npagination, it returns all groups in once.\n"
+                  }
                 }
               }
             }
@@ -685,7 +1237,92 @@
         "deprecated": false
       }
     },
-    "/groups/new": {
+    "/groups/invite-token": {
+      "post": {
+        "tags": [
+          "groups"
+        ],
+        "summary": "Использовать инвайт-токен группы",
+        "description": "Добавляет текущего залогиненного юзера в группу, чей инвайт токен передан в параметрах запроса",
+        "operationId": "UseGroupInviteToken",
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
+        "requestBody": {
+          "description": "юзернейм и пароль юзера",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "token": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Добавляет пользователя в группу и возвращает информацию по этой группе\n",
+            "headers": {},
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ok": {
+                      "type": "boolean",
+                      "format": "true"
+                    },
+                    "result": {
+                      "$ref": "#/components/schemas/Group"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid query",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServerErrorResponse_Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Некорректный токен или пользователь не авторизован",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServerErrorResponse_Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Пользователь не является модератором или создателем группы",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServerErrorResponse_Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The specified resource was not found"
+          }
+        }
+      }
+    },
+    "/groups/new/": {
       "post": {
         "tags": [
           "groups"
@@ -694,8 +1331,13 @@
         "description": "Create new group",
         "operationId": "CreateNewGroup",
         "parameters": [],
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
         "requestBody": {
-          "description": "Data of new group to store,m",
+          "description": "Data of new group to store",
           "content": {
             "application/json": {
               "schema": {
@@ -703,7 +1345,7 @@
               }
             }
           },
-          "required": false
+          "required": true
         },
         "responses": {
           "200": {
@@ -731,42 +1373,98 @@
         "deprecated": false
       }
     },
-    "/students/{id}": {
+    "/students/all/": {
       "get": {
         "tags": [
           "students"
         ],
-        "summary": "Get one student",
-        "description": "Get one student",
-        "operationId": "GetOneStudent",
-        "parameters": [
+        "summary": "addPet",
+        "description": "Returns `count` students from offset `offset`.\n",
+        "operationId": "AddPet",
+        "parameters": [],
+        "security": [
           {
-            "name": "id",
-            "in": "path",
-            "description": "ID of student to return",
-            "required": true,
-            "style": "simple",
-            "explode": false,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
+            "basicAuth": []
           }
         ],
         "responses": {
           "200": {
-            "description": "successful operation",
+            "description": "OK, return data",
             "headers": {},
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Student"
+                  "type": "object",
+                  "properties": {
+                    "ok": {
+                      "type": "boolean",
+                      "format": "true"
+                    },
+                    "result": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Student"
+                      }
+                    }
+                  },
+                  "description": "OK, return data"
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/students/deadlines/": {
+      "get": {
+        "tags": [
+          "students"
+        ],
+        "summary": "Get all current student's deadlines",
+        "description": "Получить все дедлайны текущего пользователя",
+        "operationId": "GetAllStudent'sDeadlines",
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "ok",
+            "headers": {},
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ok": {
+                      "type": "boolean",
+                      "format": "true"
+                    },
+                    "result": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Deadline"
+                      }
+                    }
+                  }
                 }
               }
             }
           },
           "400": {
             "description": "Invalid query",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServerErrorResponse_Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Некорректный токен или пользователь не авторизован",
             "content": {
               "application/json": {
                 "schema": {
@@ -780,46 +1478,52 @@
           }
         },
         "deprecated": false
-      },
-      "patch": {
+      }
+    },
+    "/students/groups/": {
+      "get": {
         "tags": [
           "students"
         ],
-        "summary": "Update student info",
-        "description": "Gets dictionary with student's description, then updates these fields in  database.\n",
-        "operationId": "UpdateStudentInfo",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "ID of student to return",
-            "required": true,
-            "style": "simple",
-            "explode": false,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
-          }
-        ],
-        "requestBody": {
-          "description": "New data to store",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/StudentBase"
-              }
-            }
-          },
-          "required": true
-        },
+        "summary": "Get all groups of current student",
+        "description": "Получить все группы текущего студента",
+        "operationId": "GetAllGroupsContainingStudnet",
         "responses": {
           "200": {
             "description": "ok",
-            "headers": {}
+            "headers": {},
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ok": {
+                      "type": "boolean",
+                      "format": "true"
+                    },
+                    "result": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Group"
+                      }
+                    }
+                  }
+                }
+              }
+            }
           },
           "400": {
             "description": "Invalid query",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServerErrorResponse_Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Некорректный токен или пользователь не авторизован",
             "content": {
               "application/json": {
                 "schema": {
@@ -829,53 +1533,41 @@
             }
           },
           "404": {
-            "description": "student with such id not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ServerErrorResponse_Error"
-                }
-              }
-            }
+            "description": "Student not found"
           }
         },
         "deprecated": false
       }
     },
-    "/students/{student_id}/deadlines": {
+    "/students/student/": {
       "get": {
         "tags": [
           "students"
         ],
-        "summary": "Get all student's deadlines",
-        "description": "Get all student's deadlines",
-        "operationId": "GetAllStudent'sDeadlines",
-        "parameters": [
+        "summary": "Get current student",
+        "description": "Получить информацию о залогиненном юзере",
+        "operationId": "GetOneStudent",
+        "security": [
           {
-            "name": "student_id",
-            "in": "path",
-            "description": "ID of student to return",
-            "required": true,
-            "style": "simple",
-            "explode": false,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
+            "basicAuth": []
           }
         ],
         "responses": {
           "200": {
-            "description": "ok",
-            "headers": {},
+            "description": "Возвращает данные о студенте. Внимание, result это сразу словарь, а не список из одного элемента.",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Deadline"
-                  },
-                  "description": "ok"
+                  "type": "object",
+                  "properties": {
+                    "ok": {
+                      "type": "boolean",
+                      "format": "true"
+                    },
+                    "result": {
+                      "$ref": "#/components/schemas/Student"
+                    }
+                  }
                 }
               }
             }
@@ -889,45 +1581,45 @@
                 }
               }
             }
-          }
-        },
-        "deprecated": false
-      }
-    },
-    "/students/{student_id}/groups": {
-      "get": {
-        "tags": [
-          "students"
-        ],
-        "summary": "Get all groups containing studnet",
-        "description": "Get all groups containing studnet",
-        "operationId": "GetAllGroupsContainingStudnet",
-        "parameters": [
-          {
-            "name": "student_id",
-            "in": "path",
-            "description": "ID of student to return",
-            "required": true,
-            "style": "simple",
-            "explode": false,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "ok",
-            "headers": {},
+          },
+          "401": {
+            "description": "Некорректный токен или пользователь не авторизован",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Group"
-                  },
-                  "description": "ok"
+                  "$ref": "#/components/schemas/ServerErrorResponse_Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Student not found"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "students"
+        ],
+        "summary": "Update current student",
+        "description": "Обновить информацию о текущем пользователе",
+        "operationId": "UpdateOneStudent",
+        "responses": {
+          "200": {
+            "description": "Обновляет данные в базе и, если все прошло успешно, возвращает обновленные данные. Внимание, поле result является словарем, а не списком из одного элемента.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ok": {
+                      "type": "boolean",
+                      "format": "true"
+                    },
+                    "result": {
+                      "$ref": "#/components/schemas/Student"
+                    }
+                  }
                 }
               }
             }
@@ -941,74 +1633,9 @@
                 }
               }
             }
-          }
-        },
-        "deprecated": false
-      }
-    },
-    "/students/all": {
-      "get": {
-        "tags": [
-          "students"
-        ],
-        "summary": "addPet",
-        "description": "Returns `count` students from offset `offset`.\n",
-        "operationId": "AddPet",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "OK, return data",
-            "headers": {},
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Student"
-                  },
-                  "description": "OK, return data"
-                }
-              }
-            }
-          }
-        },
-        "deprecated": false
-      }
-    },
-    "/students/new": {
-      "post": {
-        "tags": [
-          "students"
-        ],
-        "summary": "Create user\n",
-        "description": "Creates new user in system\n",
-        "operationId": "CreateUser\n",
-        "parameters": [],
-        "requestBody": {
-          "description": "New student data.",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/StudentBase"
-              }
-            }
           },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "headers": {},
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Student"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid query",
+          "401": {
+            "description": "Некорректный токен или пользователь не авторизован",
             "content": {
               "application/json": {
                 "schema": {
@@ -1016,9 +1643,11 @@
                 }
               }
             }
+          },
+          "404": {
+            "description": "Student not found"
           }
-        },
-        "deprecated": false
+        }
       }
     }
   },
@@ -1088,30 +1717,31 @@
         }
       },
       "Deadline": {
-        "title": "Deadline",
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int32"
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "integer",
+                "format": "int32"
+              }
+            }
           },
-          "group_id": {
-            "type": "integer",
-            "format": "int32"
+          {
+            "$ref": "#/components/schemas/DeadlineBase"
           },
-          "created_at": {
-            "$ref": "#/components/schemas/DateTime"
-          },
-          "header": {
-            "type": "string"
-          },
-          "content": {
-            "type": "string"
-          },
-          "valid_until": {
-            "$ref": "#/components/schemas/DateTime"
+          {
+            "type": "object",
+            "properties": {
+              "files": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/File"
+                }
+              }
+            }
           }
-        }
+        ]
       },
       "DeadlineBase": {
         "title": "DeadlineBase",
@@ -1122,7 +1752,8 @@
             "format": "int32"
           },
           "created_at": {
-            "$ref": "#/components/schemas/DateTime"
+            "type": "integer",
+            "format": "int32"
           },
           "header": {
             "type": "string"
@@ -1131,36 +1762,27 @@
             "type": "string"
           },
           "valid_until": {
-            "$ref": "#/components/schemas/DateTime"
+            "type": "integer",
+            "format": "int32"
           }
         }
       },
       "File": {
         "title": "File",
         "type": "object",
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/SuccessApi"
-          }
-        ],
         "properties": {
-          "result": {
-            "type": "object",
-            "properties": {
-              "id": {
-                "description": "Уникальный id файла, нужен для дальнейших взаимодействий",
-                "type": "integer",
-                "format": "int32"
-              },
-              "url": {
-                "description": "URL для файла",
-                "type": "string"
-              },
-              "name": {
-                "description": "Имя под которым его следует отдавать",
-                "type": "string"
-              }
-            }
+          "id": {
+            "description": "Уникальный id файла, нужен для дальнейших взаимодействий",
+            "type": "integer",
+            "format": "int32"
+          },
+          "url": {
+            "description": "URL для файла",
+            "type": "string"
+          },
+          "name": {
+            "description": "Имя под которым его следует отдавать",
+            "type": "string"
           }
         }
       },
@@ -1201,6 +1823,14 @@
           },
           "is_hidden": {
             "type": "boolean"
+          }
+        }
+      },
+      "InviteToken": {
+        "type": "object",
+        "properties": {
+          "token": {
+            "type": "string"
           }
         }
       },
@@ -1363,7 +1993,8 @@
       "basicAuth": {
         "type": "apiKey",
         "name": "X-TOKEN",
-        "in": "header"
+        "in": "header",
+        "description": "Токен живет час, затем его нужно\nобновить. Если в течение месяца обновления токена не произошло, токен обновить\nуже будет нельзя, и нужно будет делать релогин."
       }
     }
   }
