@@ -6,16 +6,21 @@ post:
   operationId: authLogin
   parameters: []
   requestBody:
-      description: Базовые данные авторизации
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/AuthBase'
-
+    description: юзернейм и пароль юзера
+    content:
+      application/json:
+        schema:
+          $ref: '#/components/schemas/AuthBase'
   responses:
     '200':
-      description: |
-        Возвращает токен для следующих запросов
+      description: >
+        Возвращает токен для следующих запросов. Данный токен живет час, затем
+        его нужно
+
+        обновить. Если в течение месяца обновления токена не произошло, токен
+        обновить
+
+        уже будет нельзя, и нужно будет делать релогин.
       content:
         application/json:
           schema:
@@ -25,7 +30,8 @@ post:
             description: |
               Возвращает токен
     '400':
-      description: Некорректный запрос
+      description: |
+        Некорректный запрос. 
       content:
         application/json:
           schema:

@@ -2,14 +2,15 @@ get:
   tags:
     - groups
   summary: Get all groups
-  description: Get all groups
+  description: Получить список всех групп
   operationId: GetAllGroups
   parameters: []
+  security:
+    - basicAuth: []
   responses:
     '200':
       description: |
-        Returns list of all available groups. In MVP does not support
-        pagination, it returns all groups in once.
+        Возвращает список всех групп
       headers: {}
       content:
         application/json:
@@ -17,7 +18,4 @@ get:
             type: array
             items:
               $ref: '#/components/schemas/Group'
-            description: |
-              Returns list of all available groups. In MVP does not support
-              pagination, it returns all groups in once.
   deprecated: false

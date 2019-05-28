@@ -5,10 +5,12 @@ properties:
     type: integer
     format: int32
   created_at:
-    $ref: '#/components/schemas/DateTime'
+    type: integer
+    format: int32
   header:
     type: string
   content:
     type: string
   valid_until:
-    $ref: '#/components/schemas/DateTime'
+    type: integer
+    format: int32

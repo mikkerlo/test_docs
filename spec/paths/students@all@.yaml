@@ -6,6 +6,8 @@ get:
     Returns `count` students from offset `offset`.
   operationId: AddPet
   parameters: []
+  security:
+    - basicAuth: []
   responses:
     '200':
       description: 'OK, return data'
@@ -13,8 +15,14 @@ get:
       content:
         application/json:
           schema:
-            type: array
-            items:
-              $ref: '#/components/schemas/Student'
+            type: object
+            properties:
+              ok:
+                type: boolean
+                format: 'true'
+              result:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Student'
             description: 'OK, return data'
   deprecated: false

@@ -6,7 +6,7 @@ post:
   operationId: uploadFile
   parameters: []
   security:
-  - basicAuth: []
+    - basicAuth: []
   requestBody:
     content:
       multipart/form-data:
@@ -20,7 +20,6 @@ post:
               type: string
           required:
             - file
-
   responses:
     '200':
       description: |
@@ -38,9 +37,8 @@ post:
           schema:
             $ref: '#/components/schemas/ServerErrorResponse_Error'
     '401':
-      description: Некорректный токен
+      description: Некорректный токен или пользователь не авторизован
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ServerErrorResponse_Error'
-

@@ -1,0 +1,37 @@
+get:
+  tags:
+    - students
+  summary: Get all groups of current student
+  description: Получить все группы текущего студента
+  operationId: GetAllGroupsContainingStudnet
+  responses:
+    '200':
+      description: ok
+      headers: {}
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              ok:
+                type: boolean
+                format: 'true'
+              result:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Group'
+    '400':
+      description: Invalid query
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ServerErrorResponse_Error'
+    '401':
+      description: Некорректный токен или пользователь не авторизован
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ServerErrorResponse_Error'
+    '404':
+      description: Student not found
+  deprecated: false

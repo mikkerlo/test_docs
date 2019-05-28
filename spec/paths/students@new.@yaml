@@ -1,0 +1,49 @@
+post:
+  tags:
+    - students
+  summary: |
+    Create user
+  description: |
+    Создает нового юзера в системе
+  operationId: |
+    CreateUser
+  parameters: []
+  security:
+    - basicAuth: []
+  requestBody:
+    description: New student data.
+    content:
+      application/json:
+        schema:
+          allOf:
+            - $ref: '#/components/schemas/StudentBase'
+            - type: object
+              properties:
+                username:
+                  type: string
+                  example: john
+                password:
+                  type: string
+                  example: the_most_secure_password_in_the_world
+    required: true
+  responses:
+    '200':
+      description: OK
+      headers: {}
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Student'
+    '400':
+      description: Invalid query
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ServerErrorResponse_Error'
+    '401':
+      description: Некорректный токен или пользователь не авторизован
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ServerErrorResponse_Error'
+  deprecated: false

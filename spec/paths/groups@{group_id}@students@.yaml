@@ -1,9 +1,11 @@
 get:
   tags:
     - groups
-  summary: Get all deadlines of group
-  description: Get all deadlines of group
-  operationId: GetAllDeadlinesOfGroup
+  summary: Get all students that are part of group
+  description: Get all students that are part of group
+  operationId: GetAllStudentsThatArePartOfGroup
+  security:
+    - basicAuth: []
   parameters:
     - name: group_id
       in: path
@@ -17,20 +19,22 @@ get:
   responses:
     '200':
       description: |
-        Returns list of deadlines that are attached to given group
+        Returns list of students that are attended to given group
       headers: {}
       content:
         application/json:
           schema:
             type: array
             items:
-              $ref: '#/components/schemas/Deadline'
+              $ref: '#/components/schemas/Student'
             description: |
-              Returns list of deadlines that are attached to given group
+              Returns list of students that are attended to given group
     '400':
       description: Invalid query
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ServerErrorResponse_Error'
+    '404':
+      description: The specified resource was not found
   deprecated: false

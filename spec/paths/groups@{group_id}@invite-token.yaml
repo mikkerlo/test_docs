@@ -1,0 +1,159 @@
+get:
+  tags:
+    - groups
+  summary: получить инвайт-токен группы
+  description: Возвращает текущий инвайт-токен для данной группы
+  operationId: GetGroupInviteToken
+  security:
+    - basicAuth: []
+  parameters:
+    - name: group_id
+      in: path
+      description: Id of a group to retrieve information about
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type: integer
+        format: int32
+  responses:
+    '200':
+      description: |
+        Текущий инвайт-токен
+      headers: {}
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              ok:
+                type: boolean
+                format: 'true'
+              result:
+                $ref: '#/components/schemas/InviteToken'
+    '400':
+      description: Invalid query
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ServerErrorResponse_Error'
+    '401':
+      description: Некорректный токен или пользователь не авторизован
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ServerErrorResponse_Error'
+    '403':
+      description: Пользователь не является модератором или создателем группы
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ServerErrorResponse_Error'
+    '404':
+      description: The specified resource was not found
+post:
+  tags:
+    - groups
+  summary: создать инвайт-токен группы
+  description: Создает новый инвайт-токен для данной группы
+  operationId: CreateGroupInviteToken
+  security:
+    - basicAuth: []
+  parameters:
+    - name: group_id
+      in: path
+      description: Id of a group to retrieve information about
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type: integer
+        format: int32
+  responses:
+    '200':
+      description: |
+        Текущий инвайт-токен
+      headers: {}
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              ok:
+                type: boolean
+                format: 'true'
+              result:
+                $ref: '#/components/schemas/InviteToken'
+    '400':
+      description: Invalid query
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ServerErrorResponse_Error'
+    '401':
+      description: Некорректный токен или пользователь не авторизован
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ServerErrorResponse_Error'
+    '403':
+      description: Пользователь не является модератором или создателем группы
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ServerErrorResponse_Error'
+    '404':
+      description: The specified resource was not found
+delete:
+  tags:
+    - groups
+  summary: удалить инвайт-токен группы
+  description: Возвращает текущий инвайт-токен для данной группы
+  operationId: DeleteGroupInviteToken
+  security:
+    - basicAuth: []
+  parameters:
+    - name: group_id
+      in: path
+      description: Id of a group to retrieve information about
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type: integer
+        format: int32
+  responses:
+    '200':
+      description: |
+        Текущий инвайт-токен
+      headers: {}
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              ok:
+                type: boolean
+                format: 'true'
+              result:
+                $ref: '#/components/schemas/InviteToken'
+    '400':
+      description: Invalid query
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ServerErrorResponse_Error'
+    '401':
+      description: Некорректный токен или пользователь не авторизован
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ServerErrorResponse_Error'
+    '403':
+      description: Пользователь не является модератором или создателем группы
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ServerErrorResponse_Error'
+    '404':
+      description: The specified resource was not found

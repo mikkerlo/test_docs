@@ -12,7 +12,6 @@ post:
         schema:
           $ref: '#/components/schemas/AuthChange'
     required: true
-
   responses:
     '200':
       description: |

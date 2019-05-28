@@ -1,25 +1,27 @@
 post:
   tags:
-    - groups
-  summary: Create new group
-  description: Create new group
-  operationId: CreateNewGroup
+    - deadlines
+  summary: Create new deadline
+  description: Создать новый дедлайн
+  operationId: CreateNewDeadline
   parameters: []
+  security:
+    - basicAuth: []
   requestBody:
-    description: 'Data of new group to store,m'
+    description: Data of new deadline to store
     content:
       application/json:
         schema:
-          $ref: '#/components/schemas/GroupBase'
-    required: false
+          $ref: '#/components/schemas/DeadlineBase'
+    required: true
   responses:
     '200':
-      description: Group successfully created
+      description: Deadline successfully created
       headers: {}
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/Group'
+            $ref: '#/components/schemas/Deadline'
     '400':
       description: Invalid query
       content:

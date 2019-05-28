@@ -1,0 +1,62 @@
+post:
+  tags:
+    - groups
+  summary: разжаловать модератора
+  description: Снять полномочия модератора со студента.
+  operationId: RemoveModeratorFromGroup
+  security:
+    - basicAuth: []
+  parameters:
+    - name: group_id
+      in: path
+      description: Id of a group
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type: integer
+        format: int32
+  requestBody:
+    description: Студент на удаление из модераторов
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            student_id:
+              type: integer
+              format: int32
+    required: true
+  responses:
+    '200':
+      description: |
+        Модератор удален из группы
+      headers: {}
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              ok:
+                type: boolean
+                format: 'true'
+    '400':
+      description: Invalid query
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ServerErrorResponse_Error'
+    '401':
+      description: Некорректный токен или пользователь не авторизован
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ServerErrorResponse_Error'
+    '403':
+      description: Пользователь не является создателем группы
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ServerErrorResponse_Error'
+    '404':
+      description: Пользователь на удаление не найден

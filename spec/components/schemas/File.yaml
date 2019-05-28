@@ -1,18 +1,13 @@
 title: File
 type: object
-allOf: 
-  - $ref: "#/components/schemas/SuccessApi"
 properties:
-  result:
-    type: object
-    properties:
-      id:
-        description: Уникальный id файла, нужен для дальнейших взаимодействий
-        type: integer
-        format: int32
-      url:
-        description: URL для файла
-        type: string
-      name:
-        description: Имя под которым его следует отдавать
-        type: string
+  id:
+    description: 'Уникальный id файла, нужен для дальнейших взаимодействий'
+    type: integer
+    format: int32
+  url:
+    description: URL для файла
+    type: string
+  name:
+    description: Имя под которым его следует отдавать
+    type: string

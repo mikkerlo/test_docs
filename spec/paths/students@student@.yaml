@@ -1,0 +1,73 @@
+get:
+  tags:
+    - students
+  summary: Get current student
+  description: Получить информацию о залогиненном юзере
+  operationId: GetOneStudent
+  security:
+    - basicAuth: []
+  responses:
+    '200':
+      description: >-
+        Возвращает данные о студенте. Внимание, result это сразу словарь, а не
+        список из одного элемента.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              ok:
+                type: boolean
+                format: 'true'
+              result:
+                $ref: '#/components/schemas/Student'
+    '400':
+      description: Invalid query
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ServerErrorResponse_Error'
+    '401':
+      description: Некорректный токен или пользователь не авторизован
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ServerErrorResponse_Error'
+    '404':
+      description: Student not found
+patch:
+  tags:
+    - students
+  summary: Update current student
+  description: Обновить информацию о текущем пользователе
+  operationId: UpdateOneStudent
+  responses:
+    '200':
+      description: >-
+        Обновляет данные в базе и, если все прошло успешно, возвращает
+        обновленные данные. Внимание, поле result является словарем, а не
+        списком из одного элемента.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              ok:
+                type: boolean
+                format: 'true'
+              result:
+                $ref: '#/components/schemas/Student'
+    '400':
+      description: Invalid query
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ServerErrorResponse_Error'
+    '401':
+      description: Некорректный токен или пользователь не авторизован
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ServerErrorResponse_Error'
+    '404':
+      description: Student not found

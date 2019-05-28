@@ -7,4 +7,3 @@ properties:
       - false
   error:
     type: string
-  

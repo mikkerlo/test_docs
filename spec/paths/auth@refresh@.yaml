@@ -6,7 +6,7 @@ post:
   operationId: authRefresh
   parameters: []
   security:
-  - basicAuth: []
+    - basicAuth: []
   responses:
     '200':
       description: |

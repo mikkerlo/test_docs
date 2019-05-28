@@ -1,28 +1,27 @@
 post:
   tags:
-    - students
-  summary: |
-    Create user
-  description: |
-    Creates new user in system
-  operationId: |
-    CreateUser
+    - groups
+  summary: Create new group
+  description: Create new group
+  operationId: CreateNewGroup
   parameters: []
+  security:
+    - basicAuth: []
   requestBody:
-    description: New student data.
+    description: Data of new group to store
     content:
       application/json:
         schema:
-          $ref: '#/components/schemas/StudentBase'
+          $ref: '#/components/schemas/GroupBase'
     required: true
   responses:
     '200':
-      description: OK
+      description: Group successfully created
       headers: {}
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/Student'
+            $ref: '#/components/schemas/Group'
     '400':
       description: Invalid query
       content:

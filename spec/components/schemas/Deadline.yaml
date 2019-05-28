@@ -1,17 +1,13 @@
-title: Deadline
-type: object
-properties:
-  id:
-    type: integer
-    format: int32
-  group_id:
-    type: integer
-    format: int32
-  created_at:
-    $ref: '#/components/schemas/DateTime'
-  header:
-    type: string
-  content:
-    type: string
-  valid_until:
-    $ref: '#/components/schemas/DateTime'
+allOf:
+  - type: object
+    properties:
+      id:
+        type: integer
+        format: int32
+  - $ref: '#/components/schemas/DeadlineBase'
+  - type: object
+    properties:
+      files:
+        type: array
+        items:
+          $ref: '#/components/schemas/File'

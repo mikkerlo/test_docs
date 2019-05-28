@@ -2,12 +2,14 @@ get:
   tags:
     - groups
   summary: Get one group
-  description: Get one group
+  description: Получить информацию о заданной группе
   operationId: GetOneGroup
+  security:
+    - basicAuth: []
   parameters:
     - name: group_id
       in: path
-      description: Id of a group to retrieve information about
+      description: ID группы
       required: true
       style: simple
       explode: false
@@ -17,26 +19,36 @@ get:
   responses:
     '200':
       description: |
-        Returns information about group with id `group_id`.
+        Возвращает информацию о заданной группе
       headers: {}
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Group'
     '400':
-      description: Invalid query
+      description: Неверно составлен запрос
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ServerErrorResponse_Error'
+    '401':
+      description: Некорректный токен или пользователь не авторизован
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ServerErrorResponse_Error'
     '404':
-      description: Group not found
+      description: Группа не найдена
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ServerErrorResponse_Error'
   deprecated: false
 patch:
   tags:
     - groups
   summary: Update group's info
-  description: Update group's info
+  description: Обновить информацию о группе
   operationId: UpdateGroup'sInfo
   parameters:
     - name: group_id
@@ -49,11 +61,11 @@ patch:
         type: integer
         format: int32
   requestBody:
-    description: JSON with new data to store in system.
+    description: Обновленные данные о группе. Все поля обязательны
     content:
       application/json:
         schema:
-          $ref: '#/components/schemas/Group'
+          $ref: '#/components/schemas/GroupBase'
     required: false
   responses:
     '200':
@@ -62,6 +74,12 @@ patch:
       headers: {}
     '400':
       description: Invalid query
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ServerErrorResponse_Error'
+    '401':
+      description: Некорректный токен или пользователь не авторизован
       content:
         application/json:
           schema:

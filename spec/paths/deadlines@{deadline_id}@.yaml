@@ -2,12 +2,14 @@ get:
   tags:
     - deadlines
   summary: Get deadline
-  description: Get deadline
+  description: Получить дедлайн по айдшнику
   operationId: GetDeadline
+  security:
+    - basicAuth: []
   parameters:
     - name: deadline_id
       in: path
-      description: ID of deadline to return
+      description: ID дедлайна
       required: true
       style: simple
       explode: false
@@ -16,20 +18,34 @@ get:
         format: int64
   responses:
     '200':
-      description: Returns deadline with that id
+      description: Возвращает дедлайн с заданным айдишником
       headers: {}
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/Deadline'
+            type: object
+            properties:
+              ok:
+                type: boolean
+                format: 'true'
+              result:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Deadline'
     '400':
-      description: Invalid query
+      description: Запрос составлен неверно.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ServerErrorResponse_Error'
+    '401':
+      description: Некорректный токен или пользователь не авторизован
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ServerErrorResponse_Error'
     '404':
-      description: Not found
+      description: Дедлайн не найден.
       content:
         application/json:
           schema:
@@ -39,7 +55,7 @@ patch:
   tags:
     - deadlines
   summary: Update deadline
-  description: Updates deadline
+  description: Обновить информацию о дедлайне.
   operationId: UpdateDeadline
   parameters:
     - name: deadline_id
@@ -56,7 +72,7 @@ patch:
     content:
       application/json:
         schema:
-          $ref: '#/components/schemas/Deadline'
+          $ref: '#/components/schemas/DeadlineBase'
     required: true
   responses:
     '200':
@@ -64,6 +80,12 @@ patch:
       headers: {}
     '400':
       description: Invalid query
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ServerErrorResponse_Error'
+    '401':
+      description: Некорректный токен или пользователь не авторизован
       content:
         application/json:
           schema:

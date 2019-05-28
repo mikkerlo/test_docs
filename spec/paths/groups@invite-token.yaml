@@ -1,0 +1,54 @@
+post:
+  tags:
+    - groups
+  summary: Использовать инвайт-токен группы
+  description: >-
+    Добавляет текущего залогиненного юзера в группу, чей инвайт токен передан в
+    параметрах запроса
+  operationId: UseGroupInviteToken
+  security:
+    - basicAuth: []
+  requestBody:
+    description: юзернейм и пароль юзера
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            token:
+              type: string
+  responses:
+    '200':
+      description: |
+        Добавляет пользователя в группу и возвращает информацию по этой группе
+      headers: {}
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              ok:
+                type: boolean
+                format: 'true'
+              result:
+                $ref: '#/components/schemas/Group'
+    '400':
+      description: Invalid query
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ServerErrorResponse_Error'
+    '401':
+      description: Некорректный токен или пользователь не авторизован
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ServerErrorResponse_Error'
+    '403':
+      description: Пользователь не является модератором или создателем группы
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ServerErrorResponse_Error'
+    '404':
+      description: The specified resource was not found
