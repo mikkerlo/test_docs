@@ -2,7 +2,7 @@ get:
   tags:
     - groups
   summary: Get all group's deadlines
-  description: Get all deadlines of group
+  description: Get all deadlines of group, if and only if user has permission to see geoup's info.
   operationId: GetAllDeadlinesOfGroup
   security:
     - basicAuth: []

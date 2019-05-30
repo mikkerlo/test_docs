@@ -2,7 +2,7 @@ post:
   tags:
     - groups
   summary: Add moderator
-  description: Делает указанного стдуента в группе модератором этой группы. Если студент не в этой группе, возвращается 404. 
+  description: Gives moderator role to a specified person if and only if request author is a creator of that group
   operationId: AddModeratorToGroup
   security:
     - basicAuth: []

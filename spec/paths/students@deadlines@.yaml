@@ -2,7 +2,7 @@ get:
   tags:
     - students
   summary: Get all student's deadlines
-  description: Получить все дедлайны текущего пользователя
+  description: Get all student's deadlines that this user has access to.
   operationId: GetAllStudent'sDeadlines
   security:
     - basicAuth: []

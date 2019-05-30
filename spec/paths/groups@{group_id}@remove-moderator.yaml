@@ -2,7 +2,7 @@ post:
   tags:
     - groups
   summary: Remove moderator
-  description: Снять полномочия модератора со студента.
+  description: Removes moderator role from a specified user if ans only if request author is group creator
   operationId: RemoveModeratorFromGroup
   security:
     - basicAuth: []
@@ -30,7 +30,7 @@ post:
   responses:
     '200':
       description: |
-        Модератор удален из группы
+        Moderator is deleted from group
       headers: {}
       content:
         application/json:
