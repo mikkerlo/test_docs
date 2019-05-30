@@ -1,7 +1,7 @@
 get:
   tags:
     - groups
-  summary: получить инвайт-токен группы
+  summary: Get invite token
   description: Возвращает текущий инвайт-токен для данной группы
   operationId: GetGroupInviteToken
   security:
@@ -43,18 +43,12 @@ get:
         application/json:
           schema:
             $ref: '#/components/schemas/ServerErrorResponse_Error'
-    '403':
-      description: Пользователь не является модератором или создателем группы
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ServerErrorResponse_Error'
     '404':
-      description: The specified resource was not found
+      description: Группа для генерации инвайт-токена не найдена.
 post:
   tags:
     - groups
-  summary: создать инвайт-токен группы
+  summary: Create invite token
   description: Создает новый инвайт-токен для данной группы
   operationId: CreateGroupInviteToken
   security:
@@ -107,7 +101,7 @@ post:
 delete:
   tags:
     - groups
-  summary: удалить инвайт-токен группы
+  summary: Delete invite token
   description: Возвращает текущий инвайт-токен для данной группы
   operationId: DeleteGroupInviteToken
   security:

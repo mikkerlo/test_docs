@@ -1,7 +1,7 @@
 post:
   tags:
     - auth
-  summary: login
+  summary: Login and get token
   description: Авторизироваться и получить токен
   operationId: authLogin
   parameters: []
@@ -32,6 +32,13 @@ post:
     '400':
       description: |
         Некорректный запрос. 
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ServerErrorResponse_Error'
+    '401': 
+      description: |
+        Неверные данные авторизации
       content:
         application/json:
           schema:

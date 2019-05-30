@@ -1,14 +1,14 @@
 post:
   tags:
     - groups
-  summary: Create new group
-  description: Create new group
+  summary: Create group
+  description: Создать новую группу
   operationId: CreateNewGroup
   parameters: []
   security:
     - basicAuth: []
   requestBody:
-    description: Data of new group to store
+    description: Информация о новой группе
     content:
       application/json:
         schema:
@@ -16,14 +16,14 @@ post:
     required: true
   responses:
     '200':
-      description: Group successfully created
+      description: Группа успешно создана
       headers: {}
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Group'
     '400':
-      description: Invalid query
+      description: Неправильный запрос
       content:
         application/json:
           schema:

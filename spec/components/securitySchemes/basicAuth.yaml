@@ -1,5 +1,5 @@
 type: apiKey
-name: X-TOKEN
+name: X-Token
 in: header
 description: Токен живет час, затем его нужно
 

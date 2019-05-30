@@ -1,7 +1,7 @@
 get:
   tags:
     - students
-  summary: Get current student
+  summary: Get student info
   description: Получить информацию о залогиненном юзере
   operationId: GetOneStudent
   security:
@@ -33,12 +33,11 @@ get:
         application/json:
           schema:
             $ref: '#/components/schemas/ServerErrorResponse_Error'
-    '404':
-      description: Student not found
+
 patch:
   tags:
     - students
-  summary: Update current student
+  summary: UpdateOneStudent
   description: Обновить информацию о текущем пользователе
   operationId: UpdateOneStudent
   responses:
@@ -69,5 +68,3 @@ patch:
         application/json:
           schema:
             $ref: '#/components/schemas/ServerErrorResponse_Error'
-    '404':
-      description: Student not found

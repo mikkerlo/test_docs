@@ -37,4 +37,4 @@ get:
         application/json:
           schema:
             $ref: '#/components/schemas/ServerErrorResponse_Error'
-  deprecated: false
+  deprecated: true

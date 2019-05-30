@@ -1,16 +1,16 @@
 get:
   tags:
     - students
-  summary: addPet
+  summary: Get students
   description: |
-    Returns `count` students from offset `offset`.
-  operationId: AddPet
+    Возвращает список всех студентов
+  operationId: GetStudents
   parameters: []
   security:
     - basicAuth: []
   responses:
     '200':
-      description: 'OK, return data'
+      description: Возвращает всех студентов.
       headers: {}
       content:
         application/json:

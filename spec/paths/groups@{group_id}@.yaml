@@ -1,7 +1,7 @@
 get:
   tags:
     - groups
-  summary: Get one group
+  summary: Get group
   description: Получить информацию о заданной группе
   operationId: GetOneGroup
   security:

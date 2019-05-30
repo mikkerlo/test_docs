@@ -1,14 +1,14 @@
 get:
   tags:
     - students
-  summary: Get all current student's deadlines
+  summary: Get all student's deadlines
   description: Получить все дедлайны текущего пользователя
   operationId: GetAllStudent'sDeadlines
   security:
     - basicAuth: []
   responses:
     '200':
-      description: ok
+      description: ОК
       headers: {}
       content:
         application/json:
@@ -23,7 +23,7 @@ get:
                 items:
                   $ref: '#/components/schemas/Deadline'
     '400':
-      description: Invalid query
+      description: Неверный запрос
       content:
         application/json:
           schema:
@@ -34,6 +34,4 @@ get:
         application/json:
           schema:
             $ref: '#/components/schemas/ServerErrorResponse_Error'
-    '404':
-      description: Student not found
   deprecated: false

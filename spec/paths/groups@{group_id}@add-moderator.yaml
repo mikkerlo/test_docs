@@ -1,8 +1,8 @@
 post:
   tags:
     - groups
-  summary: добавить модератора в группу
-  description: Добавляет модератора в группу.
+  summary: Add moderator
+  description: Делает указанного стдуента в группе модератором этой группы. Если студент не в этой группе, возвращается 404. 
   operationId: AddModeratorToGroup
   security:
     - basicAuth: []
@@ -59,4 +59,4 @@ post:
           schema:
             $ref: '#/components/schemas/ServerErrorResponse_Error'
     '404':
-      description: Пользователь на добавление не найден
+      description: Пользователь на добавление не найден.

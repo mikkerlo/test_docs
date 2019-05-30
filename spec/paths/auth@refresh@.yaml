@@ -1,7 +1,7 @@
 post:
   tags:
     - auth
-  summary: refresh
+  summary: Refresh token
   description: Рефрешнуть токен и получить новый
   operationId: authRefresh
   parameters: []

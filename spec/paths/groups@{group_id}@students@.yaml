@@ -1,7 +1,7 @@
 get:
   tags:
     - groups
-  summary: Get all students that are part of group
+  summary: Get all students
   description: Get all students that are part of group
   operationId: GetAllStudentsThatArePartOfGroup
   security:

@@ -1,7 +1,7 @@
 post:
   tags:
     - files
-  summary: upload
+  summary: Upload file
   description: Залить файл на сервер
   operationId: uploadFile
   parameters: []

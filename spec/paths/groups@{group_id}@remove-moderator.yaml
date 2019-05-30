@@ -1,7 +1,7 @@
 post:
   tags:
     - groups
-  summary: разжаловать модератора
+  summary: Remove moderator
   description: Снять полномочия модератора со студента.
   operationId: RemoveModeratorFromGroup
   security:

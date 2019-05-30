@@ -1,7 +1,7 @@
 post:
   tags:
     - auth
-  summary: change
+  summary: Change password
   description: Сменить пароль и получить новый токен
   operationId: authChange
   parameters: []
@@ -15,7 +15,7 @@ post:
   responses:
     '200':
       description: |
-        Возвращает токен для следующих запросов
+        Возвращает новый токен для следующих запросов. Старые токены становятся неавлидными.
       content:
         application/json:
           schema:
@@ -24,6 +24,15 @@ post:
               $ref: '#/components/schemas/AuthData'
             description: |
               Возвращает токен
+    '401':
+      description: |
+        Данные авторизации не найдены. 
+      content: 
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/ServerErrorResponse_Error'
     '400':
       description: Некорректный запрос
       content:
