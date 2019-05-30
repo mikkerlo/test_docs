@@ -40,7 +40,7 @@
         "tags": [
           "auth"
         ],
-        "summary": "change",
+        "summary": "Change password",
         "description": "Сменить пароль и получить новый токен",
         "operationId": "authChange",
         "parameters": [],
@@ -57,7 +57,7 @@
         },
         "responses": {
           "200": {
-            "description": "Возвращает токен для следующих запросов\n",
+            "description": "Возвращает новый токен для следующих запросов. Старые токены становятся неавлидными.\n",
             "content": {
               "application/json": {
                 "schema": {
@@ -79,6 +79,19 @@
                 }
               }
             }
+          },
+          "401": {
+            "description": "Данные авторизации не найдены. \n",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ServerErrorResponse_Error"
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -88,7 +101,7 @@
         "tags": [
           "auth"
         ],
-        "summary": "login",
+        "summary": "Login and get token",
         "description": "Авторизироваться и получить токен",
         "operationId": "authLogin",
         "parameters": [],
@@ -126,6 +139,16 @@
                 }
               }
             }
+          },
+          "401": {
+            "description": "Неверные данные авторизации\n",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServerErrorResponse_Error"
+                }
+              }
+            }
           }
         }
       }
@@ -135,7 +158,7 @@
         "tags": [
           "auth"
         ],
-        "summary": "refresh",
+        "summary": "Refresh token",
         "description": "Рефрешнуть токен и получить новый",
         "operationId": "authRefresh",
         "parameters": [],
@@ -386,7 +409,7 @@
             }
           }
         },
-        "deprecated": false
+        "deprecated": true
       }
     },
     "/deadlines/new/": {
@@ -445,7 +468,7 @@
         "tags": [
           "files"
         ],
-        "summary": "upload",
+        "summary": "Upload file",
         "description": "Залить файл на сервер",
         "operationId": "uploadFile",
         "parameters": [],
@@ -515,7 +538,7 @@
         "tags": [
           "groups"
         ],
-        "summary": "Get one group",
+        "summary": "Get group",
         "description": "Получить информацию о заданной группе",
         "operationId": "GetOneGroup",
         "security": [
@@ -648,8 +671,8 @@
         "tags": [
           "groups"
         ],
-        "summary": "добавить модератора в группу",
-        "description": "Добавляет модератора в группу.",
+        "summary": "Add moderator",
+        "description": "Делает указанного стдуента в группе модератором этой группы. Если студент не в этой группе, возвращается 404.",
         "operationId": "AddModeratorToGroup",
         "security": [
           {
@@ -736,7 +759,7 @@
             }
           },
           "404": {
-            "description": "Пользователь на добавление не найден"
+            "description": "Пользователь на добавление не найден."
           }
         }
       }
@@ -746,7 +769,7 @@
         "tags": [
           "groups"
         ],
-        "summary": "Get all deadlines of group",
+        "summary": "Get all group's deadlines",
         "description": "Get all deadlines of group",
         "operationId": "GetAllDeadlinesOfGroup",
         "security": [
@@ -803,7 +826,7 @@
         "tags": [
           "groups"
         ],
-        "summary": "получить инвайт-токен группы",
+        "summary": "Get invite token",
         "description": "Возвращает текущий инвайт-токен для данной группы",
         "operationId": "GetGroupInviteToken",
         "security": [
@@ -866,18 +889,8 @@
               }
             }
           },
-          "403": {
-            "description": "Пользователь не является модератором или создателем группы",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ServerErrorResponse_Error"
-                }
-              }
-            }
-          },
           "404": {
-            "description": "The specified resource was not found"
+            "description": "Группа для генерации инвайт-токена не найдена."
           }
         }
       },
@@ -885,7 +898,7 @@
         "tags": [
           "groups"
         ],
-        "summary": "создать инвайт-токен группы",
+        "summary": "Create invite token",
         "description": "Создает новый инвайт-токен для данной группы",
         "operationId": "CreateGroupInviteToken",
         "security": [
@@ -967,7 +980,7 @@
         "tags": [
           "groups"
         ],
-        "summary": "удалить инвайт-токен группы",
+        "summary": "Delete invite token",
         "description": "Возвращает текущий инвайт-токен для данной группы",
         "operationId": "DeleteGroupInviteToken",
         "security": [
@@ -1051,7 +1064,7 @@
         "tags": [
           "groups"
         ],
-        "summary": "разжаловать модератора",
+        "summary": "Remove moderator",
         "description": "Снять полномочия модератора со студента.",
         "operationId": "RemoveModeratorFromGroup",
         "security": [
@@ -1149,7 +1162,7 @@
         "tags": [
           "groups"
         ],
-        "summary": "Get all students that are part of group",
+        "summary": "Get all students",
         "description": "Get all students that are part of group",
         "operationId": "GetAllStudentsThatArePartOfGroup",
         "security": [
@@ -1242,7 +1255,7 @@
         "tags": [
           "groups"
         ],
-        "summary": "Использовать инвайт-токен группы",
+        "summary": "Use invite token",
         "description": "Добавляет текущего залогиненного юзера в группу, чей инвайт токен передан в параметрах запроса",
         "operationId": "UseGroupInviteToken",
         "security": [
@@ -1327,8 +1340,8 @@
         "tags": [
           "groups"
         ],
-        "summary": "Create new group",
-        "description": "Create new group",
+        "summary": "Create group",
+        "description": "Создать новую группу",
         "operationId": "CreateNewGroup",
         "parameters": [],
         "security": [
@@ -1337,7 +1350,7 @@
           }
         ],
         "requestBody": {
-          "description": "Data of new group to store",
+          "description": "Информация о новой группе",
           "content": {
             "application/json": {
               "schema": {
@@ -1349,7 +1362,7 @@
         },
         "responses": {
           "200": {
-            "description": "Group successfully created",
+            "description": "Группа успешно создана",
             "headers": {},
             "content": {
               "application/json": {
@@ -1360,7 +1373,7 @@
             }
           },
           "400": {
-            "description": "Invalid query",
+            "description": "Неправильный запрос",
             "content": {
               "application/json": {
                 "schema": {
@@ -1378,9 +1391,9 @@
         "tags": [
           "students"
         ],
-        "summary": "addPet",
-        "description": "Returns `count` students from offset `offset`.\n",
-        "operationId": "AddPet",
+        "summary": "Get students",
+        "description": "Возвращает список всех студентов\n",
+        "operationId": "GetStudents",
         "parameters": [],
         "security": [
           {
@@ -1389,7 +1402,7 @@
         ],
         "responses": {
           "200": {
-            "description": "OK, return data",
+            "description": "Возвращает всех студентов.",
             "headers": {},
             "content": {
               "application/json": {
@@ -1421,7 +1434,7 @@
         "tags": [
           "students"
         ],
-        "summary": "Get all current student's deadlines",
+        "summary": "Get all student's deadlines",
         "description": "Получить все дедлайны текущего пользователя",
         "operationId": "GetAllStudent'sDeadlines",
         "security": [
@@ -1431,7 +1444,7 @@
         ],
         "responses": {
           "200": {
-            "description": "ok",
+            "description": "ОК",
             "headers": {},
             "content": {
               "application/json": {
@@ -1454,7 +1467,7 @@
             }
           },
           "400": {
-            "description": "Invalid query",
+            "description": "Неверный запрос",
             "content": {
               "application/json": {
                 "schema": {
@@ -1472,9 +1485,6 @@
                 }
               }
             }
-          },
-          "404": {
-            "description": "Student not found"
           }
         },
         "deprecated": false
@@ -1485,7 +1495,7 @@
         "tags": [
           "students"
         ],
-        "summary": "Get all groups of current student",
+        "summary": "Get all groups of student",
         "description": "Получить все группы текущего студента",
         "operationId": "GetAllGroupsContainingStudnet",
         "responses": {
@@ -1531,9 +1541,6 @@
                 }
               }
             }
-          },
-          "404": {
-            "description": "Student not found"
           }
         },
         "deprecated": false
@@ -1544,7 +1551,7 @@
         "tags": [
           "students"
         ],
-        "summary": "Get current student",
+        "summary": "Get student info",
         "description": "Получить информацию о залогиненном юзере",
         "operationId": "GetOneStudent",
         "security": [
@@ -1591,9 +1598,6 @@
                 }
               }
             }
-          },
-          "404": {
-            "description": "Student not found"
           }
         }
       },
@@ -1601,7 +1605,7 @@
         "tags": [
           "students"
         ],
-        "summary": "Update current student",
+        "summary": "UpdateOneStudent",
         "description": "Обновить информацию о текущем пользователе",
         "operationId": "UpdateOneStudent",
         "responses": {
@@ -1643,9 +1647,6 @@
                 }
               }
             }
-          },
-          "404": {
-            "description": "Student not found"
           }
         }
       }
@@ -1992,7 +1993,7 @@
     "securitySchemes": {
       "basicAuth": {
         "type": "apiKey",
-        "name": "X-TOKEN",
+        "name": "X-Token",
         "in": "header",
         "description": "Токен живет час, затем его нужно\nобновить. Если в течение месяца обновления токена не произошло, токен обновить\nуже будет нельзя, и нужно будет делать релогин."
       }

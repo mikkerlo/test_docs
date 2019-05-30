@@ -23,7 +23,7 @@ paths:
     post:
       tags:
         - auth
-      summary: change
+      summary: Change password
       description: Сменить пароль и получить новый токен
       operationId: authChange
       parameters: []
@@ -37,7 +37,7 @@ paths:
       responses:
         '200':
           description: |
-            Возвращает токен для следующих запросов
+            Возвращает новый токен для следующих запросов. Старые токены становятся неавлидными.
           content:
             application/json:
               schema:
@@ -52,11 +52,20 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ServerErrorResponse_Error'
+        '401':
+          description: |
+            Данные авторизации не найдены. 
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ServerErrorResponse_Error'
   /auth/login/:
     post:
       tags:
         - auth
-      summary: login
+      summary: Login and get token
       description: Авторизироваться и получить токен
       operationId: authLogin
       parameters: []
@@ -87,11 +96,18 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ServerErrorResponse_Error'
+        '401':
+          description: |
+            Неверные данные авторизации
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServerErrorResponse_Error'
   /auth/refresh/:
     post:
       tags:
         - auth
-      summary: refresh
+      summary: Refresh token
       description: Рефрешнуть токен и получить новый
       operationId: authRefresh
       parameters: []
@@ -254,7 +270,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ServerErrorResponse_Error'
-      deprecated: false
+      deprecated: true
   /deadlines/new/:
     post:
       tags:
@@ -291,7 +307,7 @@ paths:
     post:
       tags:
         - files
-      summary: upload
+      summary: Upload file
       description: Залить файл на сервер
       operationId: uploadFile
       parameters: []
@@ -336,7 +352,7 @@ paths:
     get:
       tags:
         - groups
-      summary: Get one group
+      summary: Get group
       description: Получить информацию о заданной группе
       operationId: GetOneGroup
       security:
@@ -424,8 +440,8 @@ paths:
     post:
       tags:
         - groups
-      summary: добавить модератора в группу
-      description: Добавляет модератора в группу.
+      summary: Add moderator
+      description: 'Делает указанного стдуента в группе модератором этой группы. Если студент не в этой группе, возвращается 404.'
       operationId: AddModeratorToGroup
       security:
         - basicAuth: []
@@ -482,12 +498,12 @@ paths:
               schema:
                 $ref: '#/components/schemas/ServerErrorResponse_Error'
         '404':
-          description: Пользователь на добавление не найден
+          description: Пользователь на добавление не найден.
   '/groups/{group_id}/deadlines/':
     get:
       tags:
         - groups
-      summary: Get all deadlines of group
+      summary: Get all group's deadlines
       description: Get all deadlines of group
       operationId: GetAllDeadlinesOfGroup
       security:
@@ -526,7 +542,7 @@ paths:
     get:
       tags:
         - groups
-      summary: получить инвайт-токен группы
+      summary: Get invite token
       description: Возвращает текущий инвайт-токен для данной группы
       operationId: GetGroupInviteToken
       security:
@@ -568,18 +584,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ServerErrorResponse_Error'
-        '403':
-          description: Пользователь не является модератором или создателем группы
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ServerErrorResponse_Error'
         '404':
-          description: The specified resource was not found
+          description: Группа для генерации инвайт-токена не найдена.
     post:
       tags:
         - groups
-      summary: создать инвайт-токен группы
+      summary: Create invite token
       description: Создает новый инвайт-токен для данной группы
       operationId: CreateGroupInviteToken
       security:
@@ -632,7 +642,7 @@ paths:
     delete:
       tags:
         - groups
-      summary: удалить инвайт-токен группы
+      summary: Delete invite token
       description: Возвращает текущий инвайт-токен для данной группы
       operationId: DeleteGroupInviteToken
       security:
@@ -686,7 +696,7 @@ paths:
     post:
       tags:
         - groups
-      summary: разжаловать модератора
+      summary: Remove moderator
       description: Снять полномочия модератора со студента.
       operationId: RemoveModeratorFromGroup
       security:
@@ -749,7 +759,7 @@ paths:
     get:
       tags:
         - groups
-      summary: Get all students that are part of group
+      summary: Get all students
       description: Get all students that are part of group
       operationId: GetAllStudentsThatArePartOfGroup
       security:
@@ -812,7 +822,7 @@ paths:
     post:
       tags:
         - groups
-      summary: Использовать инвайт-токен группы
+      summary: Use invite token
       description: 'Добавляет текущего залогиненного юзера в группу, чей инвайт токен передан в параметрах запроса'
       operationId: UseGroupInviteToken
       security:
@@ -865,14 +875,14 @@ paths:
     post:
       tags:
         - groups
-      summary: Create new group
-      description: Create new group
+      summary: Create group
+      description: Создать новую группу
       operationId: CreateNewGroup
       parameters: []
       security:
         - basicAuth: []
       requestBody:
-        description: Data of new group to store
+        description: Информация о новой группе
         content:
           application/json:
             schema:
@@ -880,14 +890,14 @@ paths:
         required: true
       responses:
         '200':
-          description: Group successfully created
+          description: Группа успешно создана
           headers: {}
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Group'
         '400':
-          description: Invalid query
+          description: Неправильный запрос
           content:
             application/json:
               schema:
@@ -897,16 +907,16 @@ paths:
     get:
       tags:
         - students
-      summary: addPet
+      summary: Get students
       description: |
-        Returns `count` students from offset `offset`.
-      operationId: AddPet
+        Возвращает список всех студентов
+      operationId: GetStudents
       parameters: []
       security:
         - basicAuth: []
       responses:
         '200':
-          description: 'OK, return data'
+          description: Возвращает всех студентов.
           headers: {}
           content:
             application/json:
@@ -926,14 +936,14 @@ paths:
     get:
       tags:
         - students
-      summary: Get all current student's deadlines
+      summary: Get all student's deadlines
       description: Получить все дедлайны текущего пользователя
       operationId: GetAllStudent'sDeadlines
       security:
         - basicAuth: []
       responses:
         '200':
-          description: ok
+          description: ОК
           headers: {}
           content:
             application/json:
@@ -948,7 +958,7 @@ paths:
                     items:
                       $ref: '#/components/schemas/Deadline'
         '400':
-          description: Invalid query
+          description: Неверный запрос
           content:
             application/json:
               schema:
@@ -959,14 +969,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ServerErrorResponse_Error'
-        '404':
-          description: Student not found
       deprecated: false
   /students/groups/:
     get:
       tags:
         - students
-      summary: Get all groups of current student
+      summary: Get all groups of student
       description: Получить все группы текущего студента
       operationId: GetAllGroupsContainingStudnet
       responses:
@@ -997,14 +1005,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ServerErrorResponse_Error'
-        '404':
-          description: Student not found
       deprecated: false
   /students/student/:
     get:
       tags:
         - students
-      summary: Get current student
+      summary: Get student info
       description: Получить информацию о залогиненном юзере
       operationId: GetOneStudent
       security:
@@ -1034,12 +1040,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ServerErrorResponse_Error'
-        '404':
-          description: Student not found
     patch:
       tags:
         - students
-      summary: Update current student
+      summary: UpdateOneStudent
       description: Обновить информацию о текущем пользователе
       operationId: UpdateOneStudent
       responses:
@@ -1067,8 +1071,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ServerErrorResponse_Error'
-        '404':
-          description: Student not found
 components:
   schemas:
     AuthBase:
@@ -1299,7 +1301,7 @@ components:
   securitySchemes:
     basicAuth:
       type: apiKey
-      name: X-TOKEN
+      name: X-Token
       in: header
       description: |-
         Токен живет час, затем его нужно
