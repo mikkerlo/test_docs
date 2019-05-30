@@ -350,68 +350,6 @@
         "deprecated": false
       }
     },
-    "/deadlines/all/": {
-      "get": {
-        "tags": [
-          "deadlines"
-        ],
-        "summary": "Get all deadlines",
-        "description": "Получить список всех дедлайнов в системе",
-        "operationId": "GetAllDeadlines",
-        "parameters": [],
-        "security": [
-          {
-            "basicAuth": []
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Возвращает список всех дедлайнов, которые есть в системе, не глядя на права доступа пользователя.\n",
-            "headers": {},
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "ok": {
-                      "type": "boolean",
-                      "format": "true"
-                    },
-                    "result": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/Deadline"
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Неверный запрос",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ServerErrorResponse_Error"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Некорректный токен или пользователь не авторизован",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ServerErrorResponse_Error"
-                }
-              }
-            }
-          }
-        },
-        "deprecated": true
-      }
-    },
     "/deadlines/new/": {
       "post": {
         "tags": [
@@ -672,7 +610,7 @@
           "groups"
         ],
         "summary": "Add moderator",
-        "description": "Делает указанного стдуента в группе модератором этой группы. Если студент не в этой группе, возвращается 404.",
+        "description": "Gives moderator role to a specified person if and only if request author is a creator of that group",
         "operationId": "AddModeratorToGroup",
         "security": [
           {
@@ -770,7 +708,7 @@
           "groups"
         ],
         "summary": "Get all group's deadlines",
-        "description": "Get all deadlines of group",
+        "description": "Get all deadlines of group, if and only if user has permission to see geoup's info.",
         "operationId": "GetAllDeadlinesOfGroup",
         "security": [
           {
@@ -1065,7 +1003,7 @@
           "groups"
         ],
         "summary": "Remove moderator",
-        "description": "Снять полномочия модератора со студента.",
+        "description": "Removes moderator role from a specified user if ans only if request author is group creator",
         "operationId": "RemoveModeratorFromGroup",
         "security": [
           {
@@ -1105,7 +1043,7 @@
         },
         "responses": {
           "200": {
-            "description": "Модератор удален из группы\n",
+            "description": "Moderator is deleted from group\n",
             "headers": {},
             "content": {
               "application/json": {
@@ -1435,7 +1373,7 @@
           "students"
         ],
         "summary": "Get all student's deadlines",
-        "description": "Получить все дедлайны текущего пользователя",
+        "description": "Get all student's deadlines that this user has access to.",
         "operationId": "GetAllStudent'sDeadlines",
         "security": [
           {
